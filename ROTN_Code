@@ -1,7 +1,7 @@
 # CodeSkulptor runs Python programs in your browser.
 # Click the upper left button to run this simple demo.
 
-Will was here!
+#Will was here!
  
 # CodeSkulptor is tested to run in recent versions of
 # Chrome, Firefox, and Safari.
@@ -17,6 +17,10 @@ UP = False
 DOWN = False
 LEFT = False
 RIGHT = False
+BLOCK = False
+LEFTSTRIKE = False
+RIGHTSTRIKE = False
+POWERMOVE = False
  
 timer = 0
 star_timer = 0
@@ -35,7 +39,7 @@ pekka_strike_left = simplegui.load_image("https://ekoren.github.io/pekka_strike_
 pekka_strike_right = simplegui.load_image("https://ekoren.github.io/pekka_strike_right.jpeg")
 samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
   
- 
+
 class Ninja:
     
     def __init__(self):
@@ -77,6 +81,16 @@ class Ninja:
             self.y = 300
             
         self.pos = [self.x, self.y]
+        
+    def playerinput(self):
+        if BLOCK:
+            pass
+        if LEFTSTRIKE:
+            pass
+        if RIGHTSTRIKE:
+            pass
+        if POWERMOVE:
+            pass
         
     
     def draw(self, canvas):
@@ -208,6 +222,7 @@ def draw(canvas):
     elif melee == False and samura.fight == True:
         ninja.draw(canvas)
         ninja.move()
+        ninja.playerinput()
         
         ninja.throw_star(canvas)
         
@@ -250,7 +265,7 @@ def draw(canvas):
     
 def keyup_handler(key):
     
-    global UP, DOWN, LEFT, RIGHT
+    global UP, DOWN, LEFT, RIGHT, BLOCK, LEFTSTRIKE, RIGHTSTRIKE, POWERMOVE
     
     if key == simplegui.KEY_MAP["a"]:
         LEFT = False
@@ -266,11 +281,22 @@ def keyup_handler(key):
         
     if key == simplegui.KEY_MAP["space"]:
         ninja.star_throw = False
+        
+    if key == simplegui.KEY_MAP["f"]:
+        BLOCK = False
+        
+    if key == simplegui.KEY_MAP["q"]:
+        LEFTSTRIKE = False
+        
+    if key == simplegui.KEY_MAP["e"]:
+        RIGHTSTRIKE = False
     
+    if key == simplegui.KEY_MAP["r"]:
+        POWERMOVE = False
     
 def keydown_handler(key):
     
-    global UP, DOWN, LEFT, RIGHT, star_throw, star_count
+    global UP, DOWN, LEFT, RIGHT, star_throw, star_count, BLOCK, LEFTSTRIKE, RIGHTSTRIKE, POWERMOVE
     
     if key == simplegui.KEY_MAP["a"]:
         LEFT = True
@@ -291,6 +317,18 @@ def keydown_handler(key):
         pekka.hit = False
         star_count -= 1
         
+    if key == simplegui.KEY_MAP["f"]:
+        BLOCK = True
+        
+    if key == simplegui.KEY_MAP["q"]:
+        LEFTSTRIKE = True
+        
+    if key == simplegui.KEY_MAP["e"]:
+        RIGHTSTRIKE = True
+    
+    if key == simplegui.KEY_MAP["r"]:
+        POWERMOVE = True
+        
     
         
         
@@ -303,5 +341,3 @@ frame.set_keydown_handler(keydown_handler)
  
 # Start the frame animation
 frame.start()
- 
-
