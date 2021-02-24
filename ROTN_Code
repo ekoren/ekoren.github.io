@@ -33,10 +33,10 @@ ninja_star = simplegui.load_image("https://ekoren.github.io/ninja_star.png")
 opponent_clone_1 = simplegui.load_image("https://ekoren.github.io/opponent_clone_1.png")
 ninja1 = simplegui.load_image("https://ekoren.github.io/ninja_1.png")
 pekka_texture = simplegui.load_image("https://ekoren.github.io/pekka.jpeg")
-pekka_block = simplegui.load_image("https://ekoren.github.io/pekka_block.jpeg")
-pekka_punch = simplegui.load_image("https://ekoren.github.io/pekka_punch.jpeg")
-pekka_strike_left = simplegui.load_image("https://ekoren.github.io/pekka_strike_left..jpeg")
-pekka_strike_right = simplegui.load_image("https://ekoren.github.io/pekka_strike_right.jpeg")
+pekka_block = simplegui.load_image("https://ekoren.github.io/Pekka(Block).png")
+pekka_punch = simplegui.load_image("https://ekoren.github.io/Pekka(Punch).png")
+pekka_strike_left = simplegui.load_image("https://ekoren.github.io/Pekka(Left).png")
+pekka_strike_right = simplegui.load_image("https://ekoren.github.io/Pekka(Right).png")
 samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
   
 
@@ -179,13 +179,13 @@ class Opponent:
         if self.image == pekka_texture:
             canvas.draw_image(self.image, (125, 100), (250, 201), (self.x, self.y), self.size)
         if self.image == pekka_block:
-            canvas.draw_image(self.image, (440, 562), (880, 1133), (self.x, self.y), self.size)
+            canvas.draw_image(self.image, (264, 236), (528, 472), (self.x, self.y), self.size)
         if self.image == pekka_punch:
-            canvas.draw_image(self.image, (460, 380), (920, 759), (self.x, self.y), self.size)
+            canvas.draw_image(self.image, (253, 247), (506, 493), (self.x, self.y), self.size)
         if self.image == pekka_strike_left:
-            canvas.draw_image(self.image, (132, 145), (265, 190), (self.x, self.y), self.size)
+            canvas.draw_image(self.image, (283, 221), (565, 442), (self.x, self.y), self.size)
         if self.image == pekka_strike_right:
-            canvas.draw_image(self.image, (450, 323), (900, 647), (self.x, self.y), self.size)
+            canvas.draw_image(self.image, (222, 281), (444, 562), (self.x, self.y), self.size)
         if self.image == samura_stand:
             canvas.draw_image(self.image, (256, 256), (512, 512), (self.x, self.y), self.size)
             
