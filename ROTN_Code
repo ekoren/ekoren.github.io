@@ -24,7 +24,7 @@ POWERMOVE = False
  
 timer = 0
 star_timer = 0
-star_count = 5
+star_count = 10
  
 #images:
  
@@ -168,7 +168,7 @@ class Opponent:
         self.pos = [self.x, self.y]
         
         if self.hit == False and dist(ninja.star_pos, self.pos) < 100:
-            self.health -= 5
+            self.health -= 10
             self.hit = True
             if self.health == 0:
                 star_count = 5
@@ -193,7 +193,7 @@ class Opponent:
     
         
 ninja = Ninja()
-samura = Opponent(3, 6, 25, opponent_clone_1, (50, 50))
+samura = Opponent(3, 4, 25, opponent_clone_1, (50, 50))
 pekka = Opponent(10, 2, 100, pekka_texture, (80, 80))
         
 def start():
