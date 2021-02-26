@@ -226,7 +226,7 @@ class Opponent:
                         self.hit = True
                         self.star_hits += 1
                         ninja.star_used = True
-        if self.health <= 0:
+        if self.health < 0:
             ninja.star_count += self.star_hits
             self.star_hits = 0
 
@@ -300,7 +300,7 @@ def draw(canvas):
         samura.draw(canvas)
         samura.move()
         
-        if samura.health == 0:
+        if samura.health <= 0:
             samura.fight = False
             pekka.fight = True
         
