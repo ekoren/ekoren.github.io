@@ -56,9 +56,9 @@ samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png"
 welcome_background = simplegui.load_image("https://i.pinimg.com/originals/4d/c6/47/4dc64744eb81d936e20b6800b3b5a8b7.jpg")
   
 
-ninja_leftstrike = simplegui.load_image("https://thumbs.dreamstime.com/b/human-left-fist-fighting-pose-ready-to-fight-54631484.jpg")
-ninja_rightstrike = simplegui.load_image("https://media.istockphoto.com/photos/left-fist-on-white-background-picture-id624007814?k=6&m=624007814&s=170667a&w=0&h=hvqv6eVtZ4AJE0EYq8xIyBnRmTyF71W2eFOgxIf5TVU=")
-ninja_powermove = simplegui.load_image("https://i.pinimg.com/originals/52/19/9a/52199ad4d4db488faff03b2777532cea.png")
+ninja_leftstrike = simplegui.load_image("https://pixil-frame-3.png")
+ninja_rightstrike = simplegui.load_image("https://pixil-frame-2(1).png")
+ninja_powermove = simplegui.load_image("https://ekoren.github.io/pixil-frame-1.png")
 ninja_block = simplegui.load_image("https://i.pinimg.com/originals/42/65/95/42659539a84de9a8a6aeec22ba9dcafa.jpg") 
  
 class Ninja:
