@@ -49,18 +49,20 @@ intro_timer = 170
 
 welcome_background = simplegui.load_image("https://i.pinimg.com/originals/4d/c6/47/4dc64744eb81d936e20b6800b3b5a8b7.jpg")
  
-opponent_clone_1 = simplegui.load_image("https://ekoren.github.io/opponent_clone_1.png")
+opponent_clone_1 = simplegui.load_image("https://raw.githubusercontent.com/ekoren/ekoren.github.io/main/Small_samura.png")
 
 pekka_texture = simplegui.load_image("https://ekoren.github.io/pekka.jpeg")
-pekka_block = simplegui.load_image("https://ekoren.github.io/pekka_block.jpeg")
+pekka_block = simplegui.load_image("https://raw.githubusercontent.com/ekoren/ekoren.github.io/main/Pekka(Block).png")
 pekka_punch = simplegui.load_image("https://ekoren.github.io/pekka_punch.jpeg")
 pekka_strike_left = simplegui.load_image("https://ekoren.github.io/pekka_strike_left..jpeg")
 pekka_strike_right = simplegui.load_image("https://ekoren.github.io/pekka_strike_right.jpeg")
 
 samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
+samura_dead = simplegui.load_image("https://ekoren.github.io/sam_is_literally_dead.png")
 
-ninja1 = simplegui.load_image("https://ekoren.github.io/ninja_1.png")
-ninja_stand = simplegui.load_image("https://ekoren.github.io/New%20Piskel.png")
+ninja2 = simplegui.load_image("https://ekoren.github.io/Sam_strike_right.png")
+ninja1 = simplegui.load_image("https://raw.githubusercontent.com/ekoren/ekoren.github.io/main/Sam_strike_left.png")
+ninja_stand = simplegui.load_image("https://raw.githubusercontent.com/ekoren/ekoren.github.io/main/Sam_Dodge.png")
 ninja_star = simplegui.load_image("https://ekoren.github.io/ninja_star.png")
 ninja_leftstrike = simplegui.load_image("https://ekoren.github.io/pixil-frame-2 (1).png")
 ninja_rightstrike = simplegui.load_image("https://ekoren.github.io/pixil-frame-3.png")
@@ -130,34 +132,36 @@ class Ninja:
     
     def draw(self, canvas):
         if self.image == ninja_stand:
-            canvas.draw_image(self.image, (64, 64), (128, 128), (self.x, self.y), (50, 50))
+            canvas.draw_image(self.image, (249, 332), (499, 665), (self.x, self.y), (50, 50))
         elif self.image == ninja1:
-            canvas.draw_image(self.image, (16, 16), (32, 32), (self.x, self.y), (50, 50))
+            canvas.draw_image(self.image, (158, 211), (316, 422), (self.x, self.y), (50, 50))
+        elif self.image == ninja2:
+            canvas.draw_image(self.image, (158, 211), (316, 422), (self.x, self.y), (50, 50))
  
             
             
     def throw_star(self, canvas):
-        global star_timer, star_throw, star_count
+        global star_timer, star_throw, star_count, LEFT, RIGHT
         
         if self.star_throw == True and self.star_count > 0:
             samura.hit = False
             self.star_fly = True
             self.star_used = False
-            self.image = ninja1
+            if RIGHT == True:
+                self.image = ninja2
+            elif LEFT == True:
+                self.image = ninja1
             star_timer = 60
             self.star_count -= 1
             self.star_x = self.x
             self.star_y = self.y
             self.star_pos = [self.star_x, self.star_y]
+        
             
-        if self.star_pos[0] <= 0 or self.star_pos[0] >= 400:
-            self.star_fly = False
-         
-        if star_timer > 0 and self.star_count > 0 and self.star_fly == True:
+        if star_timer > 0 and self.star_count > 0:
             self.star_throw = False
             star_timer -= 1
             self.star_x += (self.speed + 2)*self.star_dir_x
-            self.star_pos = [self.star_x,self.star_y]
             
             canvas.draw_image(ninja_star, (430, 281), (860, 562), (self.star_x, self.star_y), (5, 5))
         
@@ -207,25 +211,38 @@ class Opponent:
             self.y = 300
             
         self.pos = [self.x, self.y]
+        
 
-    def is_hit(self):
+        if self.hit == False and dist(ninja.star_pos, self.pos) < 100:
+            self.health -= 10
+            self.hit = True
+            if self.health == 0:
+                star_count = 5
+
         if ninja.star_fly == True:
             if ninja.star_used == False:
-                if self.hit == False and dist(ninja.star_pos,self.pos) <= ((self.size[0]) + 5):
-                    self.health -= 25
-                    ninja.star_fly = False
-                    ninja.star_used = True
-                    self.star_hits += 1
-                print(dist(ninja.star_pos,self.pos))
+                if self.enemy == "samura":
+                    if self.hit == False and dist(ninja.star_pos,self.pos) > 15:
+                        self.health -= 10
+                        self.hit = True
+                        self.star_hits += 1
+                        ninja.star_used = True
+                if self.enemy == "pekka":
+                    if self.hit == False and dist(ninja.star_pos,self.pos) > 25:
+                        self.health -= 10
+                        self.hit = True
+                        self.star_hits += 1
+                        ninja.star_used = True
         if self.health <= 0:
             ninja.star_count += self.star_hits
             self.star_hits = 0
+
            
     def draw(self, canvas):
         if self.image == opponent_clone_1:
-            canvas.draw_image(self.image, (16, 16), (32, 32), (self.x, self.y), self.size)
+            canvas.draw_image(self.image, (333, 332), (665, 665), (self.x, self.y), self.size)
         if self.image == pekka_texture:
-            canvas.draw_image(self.image, (125, 100), (250, 201), (80, 170), self.size)
+            canvas.draw_image(self.image, (261, 239), (522, 478), (80, 170), self.size)
         if self.image == pekka_block:
             canvas.draw_image(self.image, (440, 562), (880, 1133), (self.x, self.y), self.size)
         if self.image == pekka_punch:
@@ -250,7 +267,7 @@ def start():
     samura.fight = True
 
 def dist(point1, point2):
-    distance = ((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)**.5
+    distance = ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**.5
     return distance
  
 # Handler to draw on canvas
@@ -289,13 +306,10 @@ def draw(canvas):
         
         samura.draw(canvas)
         samura.move()
-        samura.is_hit()
         
-        if samura.health <= 0:
+        if samura.health == 0:
             samura.fight = False
             pekka.fight = True
-            pekka.health = 100
-            samura.health = 25
         
         if dist(ninja.pos, samura.pos) < 20:
             melee = True
@@ -319,16 +333,10 @@ def draw(canvas):
     elif melee == False and pekka.fight == True:
         pekka.draw(canvas)
         pekka.move()
-        pekka.is_hit()
         ninja.draw(canvas)
         ninja.move()
         ninja.throw_star(canvas)
         pekka.enemy = "pekka"
-        if pekka.health <= 0:
-            pekka.fight = False
-            samura.fight = True
-            pekka.health = 100
-            samura.health = 25
     
     elif melee == True and pekka.fight == True:
         pekka.size = (500, 500)
