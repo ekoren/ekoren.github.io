@@ -7,6 +7,7 @@
 import simplegui
 import random
  
+#Welcome
 message = "My Clan has Disowned me,"
 message1 = "My wife has left me,"
 message2 = "My brothers are dead..."
@@ -19,6 +20,7 @@ melee = False
 intro = True 
 
 
+#Key Handles
 UP = False
 DOWN = False
 LEFT = False
@@ -29,9 +31,11 @@ LEFTSTRIKE = False
 RIGHTSTRIKE = False
 POWERMOVE = False
 
+#Player Attack Animations
 action_image = None
 action_timer = 0
  
+#General
 timer = 0
 star_timer = 0
 
@@ -42,23 +46,25 @@ intro_timer = 170
 
  
 #images:
+
+welcome_background = simplegui.load_image("https://i.pinimg.com/originals/4d/c6/47/4dc64744eb81d936e20b6800b3b5a8b7.jpg")
  
-ninja_stand = simplegui.load_image("https://ekoren.github.io/New%20Piskel.png")
-ninja_star = simplegui.load_image("https://ekoren.github.io/ninja_star.png")
 opponent_clone_1 = simplegui.load_image("https://ekoren.github.io/opponent_clone_1.png")
-ninja1 = simplegui.load_image("https://ekoren.github.io/ninja_1.png")
+
 pekka_texture = simplegui.load_image("https://ekoren.github.io/pekka.jpeg")
 pekka_block = simplegui.load_image("https://ekoren.github.io/pekka_block.jpeg")
 pekka_punch = simplegui.load_image("https://ekoren.github.io/pekka_punch.jpeg")
 pekka_strike_left = simplegui.load_image("https://ekoren.github.io/pekka_strike_left..jpeg")
 pekka_strike_right = simplegui.load_image("https://ekoren.github.io/pekka_strike_right.jpeg")
-samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
-welcome_background = simplegui.load_image("https://i.pinimg.com/originals/4d/c6/47/4dc64744eb81d936e20b6800b3b5a8b7.jpg")
-  
 
-ninja_leftstrike = simplegui.load_image("https://pixil-frame-3.png")
-ninja_rightstrike = simplegui.load_image("https://pixil-frame-2(1).png")
-ninja_powermove = simplegui.load_image("https://ekoren.github.io/pixil-frame-1.png")
+samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
+
+ninja1 = simplegui.load_image("https://ekoren.github.io/ninja_1.png")
+ninja_stand = simplegui.load_image("https://ekoren.github.io/New%20Piskel.png")
+ninja_star = simplegui.load_image("https://ekoren.github.io/ninja_star.png")
+ninja_leftstrike = simplegui.load_image("https://ekoren.github.io/pixil-frame-2 (1).png")
+ninja_rightstrike = simplegui.load_image("https://ekoren.github.io/pixil-frame-3.png")
+ninja_powermove = simplegui.load_image("https://ekoren.github.io/pixil-frame-1 (2).png")
 ninja_block = simplegui.load_image("https://i.pinimg.com/originals/42/65/95/42659539a84de9a8a6aeec22ba9dcafa.jpg") 
  
 class Ninja:
@@ -252,7 +258,7 @@ def start():
     global welcome
     welcome = False
     samura.fight = True
- 
+
 def dist(point1, point2):
     distance = ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**.5
     return distance
@@ -276,8 +282,8 @@ def draw(canvas):
         canvas.draw_text(message1, [10,112], 24, "Blue")
         canvas.draw_text(message2, [80,135], 24, "Blue")
         canvas.draw_text(message3, [80,155], 24, "Blue")
-        canvas.draw_text(message4, [80,155], 24, "Blue")
-        canvas.draw_text(message5, [80,155], 24, "Blue")
+        canvas.draw_text(message4, [80,175], 24, "Blue")
+        canvas.draw_text(message5, [80,205], 24, "Blue")
         intro_timer -= 1               
         if intro_timer == 0:
             intro = False
@@ -331,7 +337,7 @@ def draw(canvas):
         pekka.y = 150
         pekka.draw(canvas)
     
-    
+    #Action Animation for Melee
     if action_timer > 0:
         action_timer -= 1
     else:
