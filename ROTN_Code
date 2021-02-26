@@ -1,7 +1,5 @@
 # CodeSkulptor runs Python programs in your browser.
 # Click the upper left button to run this simple demo.
-
-#Will was here!
  
 # CodeSkulptor is tested to run in recent versions of
 # Chrome, Firefox, and Safari.
@@ -9,22 +7,39 @@
 import simplegui
 import random
  
-message = "Welcome to Revenge of the Ninja"
+message = "My Clan has Disowned me,"
+message1 = "My wife has left me,"
+message2 = "My brothers are dead..."
+message3 = "...I know what must be done..."
+message4 = "I must get my revenge"
+message5 = "Welcome to revenge of the ninja"
+yeet = "Die you dog"
 welcome = True
 melee = False
- 
+intro = True 
+
+
 UP = False
 DOWN = False
 LEFT = False
 RIGHT = False
+
 BLOCK = False
 LEFTSTRIKE = False
 RIGHTSTRIKE = False
 POWERMOVE = False
+
+action_image = None
+action_timer = 0
  
 timer = 0
 star_timer = 0
+
 star_count = 10
+
+quip_timer = 180
+intro_timer = 170
+
  
 #images:
  
@@ -38,8 +53,14 @@ pekka_punch = simplegui.load_image("https://ekoren.github.io/pekka_punch.jpeg")
 pekka_strike_left = simplegui.load_image("https://ekoren.github.io/pekka_strike_left..jpeg")
 pekka_strike_right = simplegui.load_image("https://ekoren.github.io/pekka_strike_right.jpeg")
 samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
+welcome_background = simplegui.load_image("https://i.pinimg.com/originals/4d/c6/47/4dc64744eb81d936e20b6800b3b5a8b7.jpg")
   
 
+ninja_leftstrike = simplegui.load_image("https://thumbs.dreamstime.com/b/human-left-fist-fighting-pose-ready-to-fight-54631484.jpg")
+ninja_rightstrike = simplegui.load_image("https://media.istockphoto.com/photos/left-fist-on-white-background-picture-id624007814?k=6&m=624007814&s=170667a&w=0&h=hvqv6eVtZ4AJE0EYq8xIyBnRmTyF71W2eFOgxIf5TVU=")
+ninja_powermove = simplegui.load_image("https://i.pinimg.com/originals/52/19/9a/52199ad4d4db488faff03b2777532cea.png")
+ninja_block = simplegui.load_image("https://i.pinimg.com/originals/42/65/95/42659539a84de9a8a6aeec22ba9dcafa.jpg") 
+ 
 class Ninja:
     
     def __init__(self):
@@ -50,10 +71,13 @@ class Ninja:
         self.x = 200
         self.y = 150
         self.star_throw = False
+        self.star_fly = False
         self.dir_x = 1
+        self.star_used = True
         self.star_dir_x = 1
         self.pos = [self.x, self.y]
-        self.star_pos = [0, 0]
+        self.star_pos = [0,0]
+        self.star_count = star_count
         
     def move(self):
         if RIGHT == True:
@@ -83,15 +107,20 @@ class Ninja:
         self.pos = [self.x, self.y]
         
     def playerinput(self):
+        global action_image,action_timer
         if BLOCK:
-            pass
+            action_image = ninja_block
+            action_timer = 60
         if LEFTSTRIKE:
-            pass
+            action_image = ninja_leftstrike
+            action_timer = 30
         if RIGHTSTRIKE:
-            pass
+            action_image = ninja_rightstrike
+            action_timer = 30
         if POWERMOVE:
-            pass
-        
+            action_image = ninja_powermove
+            action_timer = 45
+     
     
     def draw(self, canvas):
         if self.image == ninja_stand:
@@ -104,17 +133,19 @@ class Ninja:
     def throw_star(self, canvas):
         global star_timer, star_throw, star_count
         
-        if self.star_throw == True and star_count > 0:
+        if self.star_throw == True and self.star_count > 0:
             samura.hit = False
+            self.star_fly = True
+            self.star_used = False
             self.image = ninja1
             star_timer = 60
-            
+            self.star_count -= 1
             self.star_x = self.x
             self.star_y = self.y
             self.star_pos = [self.star_x, self.star_y]
         
             
-        if star_timer > 0 and star_count > 0:
+        if star_timer > 0 and self.star_count > 0:
             self.star_throw = False
             star_timer -= 1
             self.star_x += (self.speed + 2)*self.star_dir_x
@@ -132,14 +163,15 @@ class Opponent:
         self.speed = speed
         self.health = health
         self.image = image
+        self.enemy = ""
         self.timer = 0
         self.dir_x = 1
         self.dir_y = 1
         self.size = size
-        
+        self.star_hits = 0
         self.x = random.randint(0,400)
         self.y = random.randint(0,300)
-        self.pos = [self.x, self.y]
+        self.pos = [80, 170]
         self.hit = False
         self.fight = False
         
@@ -167,17 +199,37 @@ class Opponent:
             
         self.pos = [self.x, self.y]
         
+
         if self.hit == False and dist(ninja.star_pos, self.pos) < 100:
             self.health -= 10
             self.hit = True
             if self.health == 0:
                 star_count = 5
+
+        if ninja.star_fly == True:
+            if ninja.star_used == False:
+                if self.enemy == "samura":
+                    if self.hit == False and dist(ninja.star_pos,self.pos) > 15:
+                        self.health -= 10
+                        self.hit = True
+                        self.star_hits += 1
+                        ninja.star_used = True
+                if self.enemy == "pekka":
+                    if self.hit == False and dist(ninja.star_pos,self.pos) > 25:
+                        self.health -= 10
+                        self.hit = True
+                        self.star_hits += 1
+                        ninja.star_used = True
+        if self.health <= 0:
+            ninja.star_count += self.star_hits
+            self.star_hits = 0
+
            
     def draw(self, canvas):
         if self.image == opponent_clone_1:
             canvas.draw_image(self.image, (16, 16), (32, 32), (self.x, self.y), self.size)
         if self.image == pekka_texture:
-            canvas.draw_image(self.image, (125, 100), (250, 201), (self.x, self.y), self.size)
+            canvas.draw_image(self.image, (125, 100), (250, 201), (80, 170), self.size)
         if self.image == pekka_block:
             canvas.draw_image(self.image, (440, 562), (880, 1133), (self.x, self.y), self.size)
         if self.image == pekka_punch:
@@ -207,23 +259,36 @@ def dist(point1, point2):
  
 # Handler to draw on canvas
 def draw(canvas):
-    global melee
+    global melee, intro, intro_timer, action_image, action_timer
     
     canvas.draw_text(str(ninja.health),[50, 50], 12, 'blue')
-    canvas.draw_text(str(star_count),[200, 50], 12, 'red')
+    canvas.draw_text(str(ninja.star_count),[200, 50], 12, 'red')
         
     
     if welcome == True:
-        pekka.draw(canvas)
-        samura.draw(canvas)
-        ninja.draw(canvas)
+
+        
+        canvas.draw_image(welcome_background, (640, 360), (1280, 720), (200, 150), (400, 300))
         canvas.draw_text(message, [50,112], 24, "Red")
         
+    elif intro == True:
+        canvas.draw_image(welcome_background, (640, 360), (1280, 720), (200, 150), (400, 300))
+        canvas.draw_text(message1, [10,112], 24, "Blue")
+        canvas.draw_text(message2, [80,135], 24, "Blue")
+        canvas.draw_text(message3, [80,155], 24, "Blue")
+        canvas.draw_text(message4, [80,155], 24, "Blue")
+        canvas.draw_text(message5, [80,155], 24, "Blue")
+        intro_timer -= 1               
+        if intro_timer == 0:
+            intro = False
+        
+        
     elif melee == False and samura.fight == True:
+  
+            
         ninja.draw(canvas)
         ninja.move()
-        ninja.playerinput()
-        
+        samura.enemy = "samura"
         ninja.throw_star(canvas)
         
         samura.draw(canvas)
@@ -237,6 +302,11 @@ def draw(canvas):
             melee = True
             
     elif melee == True and samura.fight == True:
+        global quip_timer
+        if quip_timer > 0:
+            quip_timer -= 1
+            canvas.draw_text(yeet, [250, 100], 24, 'orange')
+            
         #ninja.draw(canvas)
         #ninja.move()
         samura.size = (300, 300)
@@ -253,6 +323,7 @@ def draw(canvas):
         ninja.draw(canvas)
         ninja.move()
         ninja.throw_star(canvas)
+        pekka.enemy = "pekka"
     
     elif melee == True and pekka.fight == True:
         pekka.size = (500, 500)
@@ -260,8 +331,15 @@ def draw(canvas):
         pekka.y = 150
         pekka.draw(canvas)
     
+    
+    if action_timer > 0:
+        action_timer -= 1
     else:
-        pass
+        action_image = None
+    ninja.playerinput() 
+    if action_image != None and melee:
+        canvas.draw_image(action_image, (action_image.get_width()/2,action_image.get_height()/2), (action_image.get_width(), action_image.get_height()),(200,150),(400,300))
+    
     
 def keyup_handler(key):
     
@@ -281,7 +359,7 @@ def keyup_handler(key):
         
     if key == simplegui.KEY_MAP["space"]:
         ninja.star_throw = False
-        
+    
     if key == simplegui.KEY_MAP["f"]:
         BLOCK = False
         
@@ -315,7 +393,6 @@ def keydown_handler(key):
         ninja.star_dir_x = ninja.dir_x
         samura.hit = False
         pekka.hit = False
-        star_count -= 1
         
     if key == simplegui.KEY_MAP["f"]:
         BLOCK = True
@@ -328,8 +405,6 @@ def keydown_handler(key):
     
     if key == simplegui.KEY_MAP["r"]:
         POWERMOVE = True
-        
-    
         
         
 # Create a frame and assign callbacks to event handlers
