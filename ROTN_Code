@@ -149,12 +149,15 @@ class Ninja:
             self.star_x = self.x
             self.star_y = self.y
             self.star_pos = [self.star_x, self.star_y]
-        
             
+        if self.star_pos[0] <= 0 or self.star_pos[0] >= 400:
+            self.star_fly = False
+         
         if star_timer > 0 and self.star_count > 0:
             self.star_throw = False
             star_timer -= 1
             self.star_x += (self.speed + 2)*self.star_dir_x
+            self.star_pos = [self.star_x,self.star_y]
             
             canvas.draw_image(ninja_star, (430, 281), (860, 562), (self.star_x, self.star_y), (5, 5))
         
@@ -204,32 +207,19 @@ class Opponent:
             self.y = 300
             
         self.pos = [self.x, self.y]
-        
 
-        if self.hit == False and dist(ninja.star_pos, self.pos) < 100:
-            self.health -= 10
-            self.hit = True
-            if self.health == 0:
-                star_count = 5
-
+    def is_hit(self):
         if ninja.star_fly == True:
             if ninja.star_used == False:
-                if self.enemy == "samura":
-                    if self.hit == False and dist(ninja.star_pos,self.pos) > 15:
-                        self.health -= 10
-                        self.hit = True
-                        self.star_hits += 1
-                        ninja.star_used = True
-                if self.enemy == "pekka":
-                    if self.hit == False and dist(ninja.star_pos,self.pos) > 25:
-                        self.health -= 10
-                        self.hit = True
-                        self.star_hits += 1
-                        ninja.star_used = True
+                if self.hit == False and dist(ninja.star_pos,self.pos) <= ((self.size[0]) + 5):
+                    self.health -= 25
+                    ninja.star_fly = False
+                    ninja.star_used = True
+                    self.star_hits += 1
+                print(dist(ninja.star_pos,self.pos))
         if self.health <= 0:
             ninja.star_count += self.star_hits
             self.star_hits = 0
-
            
     def draw(self, canvas):
         if self.image == opponent_clone_1:
@@ -299,10 +289,13 @@ def draw(canvas):
         
         samura.draw(canvas)
         samura.move()
+        samura.is_hit()
         
-        if samura.health == 0:
+        if samura.health <= 0:
             samura.fight = False
             pekka.fight = True
+            pekka.health = 100
+            samura.health = 25
         
         if dist(ninja.pos, samura.pos) < 20:
             melee = True
@@ -326,10 +319,16 @@ def draw(canvas):
     elif melee == False and pekka.fight == True:
         pekka.draw(canvas)
         pekka.move()
+        pekka.is_hit()
         ninja.draw(canvas)
         ninja.move()
         ninja.throw_star(canvas)
         pekka.enemy = "pekka"
+        if pekka.health <= 0:
+            pekka.fight = False
+            samura.fight = True
+            pekka.health = 100
+            samura.health = 25
     
     elif melee == True and pekka.fight == True:
         pekka.size = (500, 500)
