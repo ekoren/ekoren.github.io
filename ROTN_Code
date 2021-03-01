@@ -221,33 +221,7 @@ class Opponent:
             self.y = 300
             
         self.pos = [self.x, self.y]
-        
-
-        if self.hit == False and dist(ninja.star_pos, self.pos) < 100:
-            self.health -= 10
-            self.hit = True
-            if self.health == 0:
-                star_count = 5
-
-        if ninja.star_fly == True:
-            if ninja.star_used == False:
-                if self.enemy == "samura":
-                    if self.hit == False and dist(ninja.star_pos,self.pos) > 15:
-                        self.health -= 10
-                        self.hit = True
-                        self.star_hits += 1
-                        ninja.star_used = True
-                if self.enemy == "pekka":
-                    if self.hit == False and dist(ninja.star_pos,self.pos) > 25:
-                        self.health -= 10
-                        self.hit = True
-                        self.star_hits += 1
-                        ninja.star_used = True
-        if self.health <= 0:
-            ninja.star_count += self.star_hits
-            self.star_hits = 0
-
-           
+                  
     def draw(self, canvas):           
         canvas.draw_image(self.image, (self.image.get_width()/2, self.image.get_height()/2), (self.image.get_width(),self.image.get_height()), (self.x,self.y), self.size)
            
@@ -269,7 +243,7 @@ class Opponent:
     def is_hit(self):
         if ninja.star_fly == True:
             if ninja.star_used == False:
-                if self.hit == False and dist(ninja.star_pos,self.pos) <= ((self.size[0]) + 5):
+                if self.hit == False and dist(ninja.star_pos,self.pos) <= ((self.size[0]/2) + 2.5):
                     self.health -= 25
                     ninja.star_fly = False
                     ninja.star_used = True
@@ -289,7 +263,7 @@ def start():
     samura.fight = True
 
 def dist(point1, point2):
-    distance = ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**.5
+    distance = ((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)**.5
     return distance
  
 # Handler to draw on canvas
@@ -301,8 +275,6 @@ def draw(canvas):
         
     
     if welcome == True:
-
-        
         canvas.draw_image(welcome_background, (640, 360), (1280, 720), (200, 150), (400, 300))
         canvas.draw_text(message, [50,112], 24, "Red")
         
@@ -318,9 +290,7 @@ def draw(canvas):
             intro = False
         
         
-    elif melee == False and samura.fight == True:
-  
-            
+    elif melee == False and samura.fight == True: 
         ninja.draw(canvas)
         ninja.move()
         samura.enemy = "samura"
@@ -336,7 +306,7 @@ def draw(canvas):
             samura.health = 25
             pekka.health = 100
         
-        if dist(ninja.pos, samura.pos) < 20:
+        if dist(ninja.pos, samura.pos) <= ((samura.size[0]/2)+2.5):
             melee = True
             
     elif melee == True and samura.fight == True:
@@ -344,6 +314,13 @@ def draw(canvas):
         if quip_timer > 0:
             quip_timer -= 1
             canvas.draw_text(yeet, [250, 100], 24, 'orange')
+            
+        if samura.health <= 0:
+            melee = False
+            samura.fight = False
+            pekka.fight = True
+            pekka.health = 100
+            samura.health = 25
             
         #ninja.draw(canvas)
         #ninja.move()
@@ -370,12 +347,23 @@ def draw(canvas):
             samura.fight = True
             samura.health = 25
             pekka.health = 100
+            ninja.star_count += 2
+            
+        #if dist(ninja.pos, pekka.pos) <= (pekka.size[0]):
+        #    melee = True
             
     elif melee == True and pekka.fight == True:
         pekka.size = (500, 500)
         pekka.x = 200
         pekka.y = 150
         pekka.draw(canvas)
+        
+        if pekka.health <= 0:
+            melee = False
+            pekka.fight = False
+            samura.fight = True
+            samura.health = 25
+            pekka.health = 100
     
     #Action Animation for Melee
     if action_timer > 0:
