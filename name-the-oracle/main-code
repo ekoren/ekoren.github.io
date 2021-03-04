@@ -1,4 +1,5 @@
-//main code will go here
+#main code will go here
+
 
 #Images:
 
@@ -6,3 +7,144 @@ forest_character_bust = simplegui.load_image("https://media.discordapp.net/attac
 forest_character_stand_walk = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423708729540628/Untitled18_20210302163516.png?width=316&height=422")
 forest_character_walk = simplegui.load_image("https://lh3.googleusercontent.com/fife/ABSRlIoTE93zrb7BSLNpD3etcS4BMVsSibXE55wHdOU3Wnaz1TFw_E1BXOdlfagsLsVnT70_SE1cJD5hEca6g_YK_LvbFq-JGyHUgklHirgSP8rmgA8KtswITeLjazvmbhkttjR7xAw6Hkp8X4NcjMOzLbCX5zsG9hO0T4_SQResaQ-XbO5dStWVTbG5uGcae-Xd-jH8hy4uBgqOMFuvfFepmgiB1NJXVeHA0y5IlXA7W71pvfFGw4gf8TOaPwCM8rHfjAGJm6PTOk79Cge20W7dw3JrJfIAAl_lyH3Fqj4Y4jK-z-ytkKg42oxFkRyTGDUXoZ6IguXkv9psBRvanNsGMUP7BpvX7ijrWYWkkmyjrvUe0peKN0zCwgsSZyvfcafDPCJwCdWl3ySM7GeAxDzbWsdGgYv8IG9dGmvYdGP5O32PKEMcJTigvYXbcxRyLWEtwVadmqzJHdBgCi5cn3TwOxrks5nT0_wu5PWMXpTmquvf1VG7ZQgrpK0mxWxmNxH-Y4IBO2bNiRbNGan6HsJc59G9UWNHkqREs6Mkm_6n_35c3GgENaqbr_3HarGh8tThXLMsF-n_B22ZQnGZkj9guC0DtrdU0D1Fh_IrkFO_vlPDierthVva5bO-bREx0vOYpR7jiKA9EbfB6fxm4K7MCg_ljIO8dv9Yf26C94eyH40eOfqqIltCw1_mgEyAGd4D5zhIf93yDXmop_U3a8oExkAm-l0SqI4=w1366-h665-ft?authuser=0")
 forest_background = simplegui.load_image("https://static.photocrowd.com/upl/3m/cms.Wl4JJNTjmGx8TN459Mbw-hd.jpeg")
+
+import simplegui
+import random
+
+#Attributes Lists
+
+locations = ["Coast","Forest","Mountains","Valley","Plains"]
+occupations = ["Fisherman","Hunter","Nobel","Warrior","Farmer","Guard","Scribe","Bard","Carpenter"]
+foods = ["Goat Meat","Steak","Rice","Berries","Fish","Bread","Potatoes","Cheese"]
+travels = ["Horseback","Walking","Wagon","Donkey","Camel","Boat"]
+orgins = ["Earth","Air","Water","Fire"]
+hobbies = ["Walking along the river","Teaching the kids","Protecting the crops","Contemplate the meaning of life","Hunt large animals","Walk by the shore","Watch the birds"]
+traits = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungrateful"]
+first_names = ["Aldus","Daw","Col","Amis","Bate","Dicun","Elis","Elric","Firmin","Hamo","Hankin","Hann","Herry","Jackin","Judd","Nichol","Noll","Stace"]							
+last_names = ["Ashdown","Baker","Bennett","Biggie","Clarke","Mannering","Walter","Webb","Payne","Ward","Taylor","Hughes","Godfrey","Nash","Rolfe","Cooper"]
+
+Oracles = []
+
+class Profile:
+    
+    def __init__(self):
+        self.villager_location = random.choice(locations)
+        self.oracle_location = random.choice(locations)
+        self.occupation = ""
+        self.food = ""
+        self.travel = ""
+        self.age = ""
+        self.orgin = ""
+        self.hobby = ""
+        self.trait = ""
+        self.name = ""
+        self.attributes = []
+        self.oracle_attributes = []
+        self.known_attributes = ["","","","","","","","",""]
+        self.display_known = False
+        
+    def new_attributes(self):
+        self.attributes = []
+        self.attributes.append("Location: "+str(self.villager_location))
+        self.first_name = random.choice(first_names)
+        self.last_name = random.choice(last_names)
+        self.name = str(self.first_name)+" "+str(self.last_name)
+        self.attributes.append("Name: "+str(self.name))
+        self.occupation = random.choice(occupations)
+        self.attributes.append("Occupation: "+str(self.occupation))
+        self.food = random.choice(foods)
+        self.attributes.append("Food: "+str(self.food))
+        self.travel = random.choice(travels)
+        self.attributes.append("Travel: "+str(self.travel))
+        self.age = random.randint(15,103)
+        self.attributes.append("Age: "+str(self.age)+" years old")
+        self.orgin = random.choice(orgins)
+        self.attributes.append("Orgin: "+str(self.orgin))
+        self.hobby = random.choice(hobbies)
+        self.attributes.append("Hobby: "+str(self.hobby))
+        self.trait = random.choice(traits)
+        self.attributes.append("Trait: "+str(self.trait))
+        for i in range(len(self.attributes)):
+            if self.attributes[i] == self.oracle_attributes[i]:
+                if self.oracle_attributes[i] not in self.known_attributes:
+                    self.known_attributes[i] = self.oracle_attributes[i]
+        
+    def oracle_attribute(self):
+        self.oracle_attributes = []
+        self.oracle_attributes.append("Location: "+str(self.oracle_location))
+        self.first_name = random.choice(first_names)
+        self.last_name = random.choice(last_names)
+        self.name = str(self.first_name)+" "+str(self.last_name)
+        self.oracle_attributes.append("Name: "+str(self.name))
+        self.occupation = random.choice(occupations)
+        self.oracle_attributes.append("Occupation: "+str(self.occupation))
+        self.food = random.choice(foods)
+        self.oracle_attributes.append("Food: "+str(self.food))
+        self.travel = random.choice(travels)
+        self.oracle_attributes.append("Travel: "+str(self.travel))
+        self.age = random.randint(15,103)
+        self.oracle_attributes.append("Age: "+str(self.age))
+        self.orgin = random.choice(orgins)
+        self.oracle_attributes.append("Orgin: "+str(self.orgin))
+        self.hobby = random.choice(hobbies)
+        self.oracle_attributes.append("Hobby: "+str(self.hobby))
+        self.trait = random.choice(traits)
+        self.oracle_attributes.append("Trait: "+str(self.trait))
+        
+    def known_attribute(self):
+        if self.display_known == True:
+            self.display_known = False
+        elif self.display_known == False:
+            self.display_known = True
+            
+    def change_location(self):
+        for i in range(len(locations)):
+            if self.villager_location == locations[i]:
+                if i == (len(locations)-1):
+                    self.villager_location = locations[0]
+                elif i != (len(locations)-1):
+                    self.villager_location = locations[i+1]
+                self.attributes[0] = "Location: "+str(self.villager_location)
+                self.new_attributes()
+                break
+Guy1 = Profile()
+Guy1.oracle_attribute()
+Guy1.new_attributes()
+
+def profile_draw(canvas):
+    canvas.draw_polygon([(5,195),(600,195),(600,5),(5,5)],10,"Orange","White")
+    text_box = "Text Box"
+    text_y = 25
+    canvas.draw_text(text_box,[12,text_y],18,"Black")
+    
+    if Guy1.display_known == False:
+        canvas.draw_polygon([(5,205),(350,205),(350,395),(5,395)],10,"Cyan","White")
+        text_y = 224
+        villager_text = "Villager Attributes"
+        canvas.draw_text(villager_text,[12,text_y],18,"Black")
+        text_y += 18
+        for i in range(len(Guy1.attributes)):
+            canvas.draw_text(Guy1.attributes[i],[12,text_y],18,"Black")
+            text_y += 18
+    if Guy1.display_known == True:
+        canvas.draw_polygon([(5,205),(350,205),(350,395),(5,395)],10,"Red","White")
+        text_y = 224
+        known_text = "Known Oracle Attributes"
+        canvas.draw_text(known_text,[12,text_y],18,"Black")
+        text_y += 18
+        for i in range(len(Guy1.known_attributes)):
+            canvas.draw_text(Guy1.known_attributes[i],[12,text_y],18,"Black")
+            text_y += 18
+            
+print(Guy1.oracle_attributes)
+
+def draw(canvas):
+    profile_draw(canvas)
+            
+frame = simplegui.create_frame("Oracle",600,400)
+frame.set_draw_handler(draw)
+frame.add_button("Change Location",Guy1.change_location)
+frame.add_button("Meet New Villager",Guy1.new_attributes)
+frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
+frame.start()
+#>>>>>>> main
