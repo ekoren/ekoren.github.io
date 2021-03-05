@@ -22,7 +22,13 @@ traits = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungratef
 first_names = ["Aldus","Daw","Col","Amis","Bate","Dicun","Elis","Elric","Firmin","Hamo","Hankin","Hann","Herry","Jackin","Judd","Nichol","Noll","Stace"]							
 last_names = ["Ashdown","Baker","Bennett","Biggie","Clarke","Mannering","Walter","Webb","Payne","Ward","Taylor","Hughes","Godfrey","Nash","Rolfe","Cooper"]
 
-Oracles = []
+Oracles = ["Nate Trier","Katrina Woodsworth","Boomy","Buster","Draginthese","GM Soneus Badaches","jim-jam","Jared","Geoffe","Geoff Baysos","Duffy Goldifold"]
+Oracle_Locations = ["Mountains","Mountains","Mountains","Coast","Valley","Plains","Forest","Coast","Forest","Mountains","Coast"]
+Oracle_Occupations = ["Nobel","Fisherman","Warrior","Carpenter","Warrior","Bard","Warrior","Bard","Bard","Fisherman","Fisherman"]
+Oracle_Foods = ["Fish","Cheese","Cheese","Goat Meat","Cheese","Fish","Fish","Cheese","Cheese","Goat Meat","Goat Meat"]
+Oracle_Travels = ["Walking","Walking","Donkey","Wagon","Horseback","Horseback","Walking","Walking","Donkey","Boat","Boat"]
+Oracle_Ages = [17,17,75,43,17,17,75,43,36,75,17]
+Oracle_Orgins = ["Water","Fire","Earth","Earth","Fire","Fire","Earth","Earth","Fire","Fire","Air"]
 
 class Profile:
     
@@ -42,6 +48,7 @@ class Profile:
         self.known_attributes = ["","","","","","","","",""]
         self.display_known = False
         self.same_traits = 0
+        self.attributes_text = []
         
     def new_attributes(self):
         x = []
@@ -69,33 +76,50 @@ class Profile:
         for i in range(len(self.attributes)):
             if self.attributes[i] == self.oracle_attributes[i]:
                 self.same_traits += 1
-                x.append(i)
-        for n in range(self.same_traits):
-            if self.same_traits >= 2:
-                i = x[n]
-                self.known_attributes[i] = self.oracle_attributes[i]
+        if self.villager_location == locations[1]:
+            self.background = forest_background
+            self.villager_type = forest_character_bust
+        #elif self.villager_location == locations[4]:
+        #    self.background = plains_background
+        else:
+            self.background = forest_background
+            self.villager_type = forest_character_bust
+            
+        self.ask()
         
     def oracle_attribute(self):
         self.oracle_attributes = []
-        self.oracle_attributes.append("Location: "+str(self.oracle_location))
-        self.first_name = random.choice(first_names)
-        self.last_name = random.choice(last_names)
-        self.name = str(self.first_name)+" "+str(self.last_name)
-        self.oracle_attributes.append("Name: "+str(self.name))
-        self.occupation = random.choice(occupations)
-        self.oracle_attributes.append("Occupation: "+str(self.occupation))
-        self.food = random.choice(foods)
-        self.oracle_attributes.append("Food: "+str(self.food))
-        self.travel = random.choice(travels)
-        self.oracle_attributes.append("Travel: "+str(self.travel))
-        self.age = random.randint(15,103)
-        self.oracle_attributes.append("Age: "+str(self.age))
-        self.orgin = random.choice(orgins)
-        self.oracle_attributes.append("Orgin: "+str(self.orgin))
-        self.hobby = random.choice(hobbies)
-        self.oracle_attributes.append("Hobby: "+str(self.hobby))
-        self.trait = random.choice(traits)
-        self.oracle_attributes.append("Trait: "+str(self.trait))
+        self.attributes_text = []
+        self.name = random.choice(Oracles)
+        for i in range(len(Oracles)):
+            if self.name == Oracles[i]:
+                self.location = Oracle_Locations[i]
+                self.oracle_attributes.append("Location: "+str(self.location))
+                self.attributes_text.append(self.location)
+                self.oracle_attributes.append("Name: "+str(self.name))
+                self.attributes_text.append(self.name)
+                self.occupation = Oracle_Occupations[i]
+                self.oracle_attributes.append("Occupation: "+str(self.occupation))
+                self.attributes_text.append(self.occupation)
+                self.food = Oracle_Foods[i]
+                self.oracle_attributes.append("Food: "+str(self.food))
+                self.attributes_text.append(self.food)
+                self.travel = Oracle_Travels[i]
+                self.oracle_attributes.append("Travel: "+str(self.travel))
+                self.attributes_text.append(self.travel)
+                self.age = Oracle_Ages[i]
+                self.oracle_attributes.append("Age: "+str(self.age))
+                self.attributes_text.append(self.age)
+                self.orgin = Oracle_Orgins[i]
+                self.oracle_attributes.append("Orgin: "+str(self.orgin))
+                self.attributes_text.append(self.orgin)
+                self.hobby = random.choice(hobbies)
+                self.oracle_attributes.append("Hobby: "+str(self.hobby))
+                self.attributes_text.append(self.hobby) 
+                self.trait = random.choice(traits)
+                self.oracle_attributes.append("Trait: "+str(self.trait))
+                self.attributes_text.append(self.trait)
+                
         
     def known_attribute(self):
         if self.display_known == True:
@@ -112,27 +136,86 @@ class Profile:
                     self.villager_location = locations[i+1]
                 self.attributes[0] = "Location: "+str(self.villager_location)
                 self.new_attributes()
-                if self.villager_location == locations[1]:
-                    self.background = forest_background
-                    self.villager_type = forest_character_bust
-                #elif self.villager_location == locations[4]:
-                #    self.background = plains_background
-                else:
-                    self.background = forest_background
-                    self.villager_type = forest_character_bust
                 break
                 
-    def Option_1(self):
+    def ask(self):
         self.question = "You: Do you know the Oracle?"
         if self.same_traits >= 2:
             self.response = "Villager: Yeah, I know the Oracle."
         elif self.same_traits < 2:
             self.response = "Villager: No, I don't know who that is."
     
+    def Option_1(self):
+        self.question = "You: Where is he?"
+        if self.attributes[0] == self.oracle_attributes[0]:
+            if self.same_traits >= 2:
+                self.response = "Villager: He's at "+str(self.attributes_text[0])+"."
+                self.known_attributes[0] = self.oracle_attributes[0]
+            else:
+                self.response = "Villager: I don't know where he is."
+        else:
+            self.response = "Villager: I don't know where he is."
+    def Option_2(self):
+        self.question = "You: What's his job?"
+        if self.attributes[2] == self.oracle_attributes[2]:
+            if self.same_traits >= 2:
+                self.response = "Villager: He is a "+str(self.attributes_text[2])+"."
+                self.known_attributes[2] = self.oracle_attributes[2]
+            else:
+                self.response = "Villager: I don't know what he does."
+        else:
+            self.response = "Villager: I don't know what he does."
+    def Option_3(self):
+        self.question = "You: What's his favorite food?"
+        if self.attributes[3] == self.oracle_attributes[3]:
+            if self.same_traits >= 2:
+                self.response = "Villager: He eats "+str(self.attributes_text[3])+"."
+                self.known_attributes[3] = self.oracle_attributes[3]
+            else:
+                self.response = "Villager: I don't know what he eats."
+        else:
+            self.response = "Villager: I don't know what he eats."
+    def Option_4(self):
+        self.question = "You: How does he get around?"
+        if self.attributes[4] == self.oracle_attributes[4]:
+            if self.same_traits >= 2:
+                self.response = "Villager: He travels by "+str(self.attributes_text[4])+"."
+                self.known_attributes[4] = self.oracle_attributes[4]
+            else:
+                self.response = "Villager: I don't know how he travels."
+        else:
+            self.response = "Villager: I don't know how he travels."
+    def Option_5(self):
+        self.question = "You: Where does he come from?"
+        if self.attributes[6] == self.oracle_attributes[6]:
+            if self.same_traits >= 2:
+                self.response = "Villager: He's from the "+str(self.attributes_text[6])+" nation."
+                self.known_attributes[6] = self.oracle_attributes[6]
+            else:
+                self.response = "Villager: I don't know where he is from."
+        else:
+            self.response = "Villager: I don't know where he is from."
+    def Option_6(self):
+        self.question = "You: Whhat does he do for fun?"
+        if self.attributes[7] == self.oracle_attributes[7]:
+            if self.same_traits >= 2:
+                self.response = "Villager: He "+str(self.attributes_text[7])+"."
+                self.known_attributes[7] = self.oracle_attributes[7]
+            else:
+                self.response = "Villager: I don't know what he does."
+        else:
+            self.response = "Villager: I don't know what he does."
+    def Option_7(self):
+        if self.same_traits >= 2:
+            self.question = "You: What's he like?"
+            self.response = "Villager: He's is "+str(self.attributes_text[8])+"."
+            self.known_attributes[8] = self.oracle_attributes[8]
+        else:
+            self.response = "Villager: I don't know him."
+    
 Guy1 = Profile()
 Guy1.oracle_attribute()
 Guy1.new_attributes()
-Guy1.change_location()
 
 def profile_draw(canvas):
     canvas.draw_polygon([(5,395),(350,395),(350,205),(5,205)],10,"Orange","White")
@@ -163,7 +246,6 @@ def profile_draw(canvas):
             text_y += 18
 
 def text_draw(canvas):
-    Guy1.Option_1()
     hello_text = "Villager: Hello Traveler"
     canvas.draw_text(hello_text,[12,224+18],18,"Black")
     canvas.draw_text(Guy1.question,[12,(224+18+18)],18,"Black")
@@ -180,4 +262,11 @@ frame.set_draw_handler(draw)
 frame.add_button("Change Location",Guy1.change_location)
 frame.add_button("Meet New Villager",Guy1.new_attributes)
 frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
+frame.add_button("Ask Location",Guy1.Option_1)
+frame.add_button("Ask Job",Guy1.Option_2)
+frame.add_button("Ask Food",Guy1.Option_3)
+frame.add_button("Ask Travel",Guy1.Option_4)
+frame.add_button("Ask Orgin",Guy1.Option_5)
+frame.add_button("Ask Hobby",Guy1.Option_6)
+frame.add_button("Ask Trait",Guy1.Option_7)
 frame.start()
