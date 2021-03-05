@@ -1,7 +1,7 @@
-#main code will go here
+import simplegui
+import random
 
-
-#Images:
+#Images
 
 forest_character_bust = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423654421954610/Untitled17_20210302134644.png?width=422&height=422")
 forest_character_stand_walk = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423708729540628/Untitled18_20210302163516.png?width=316&height=422")
@@ -9,9 +9,6 @@ forest_character_walk = simplegui.load_image("https://lh3.googleusercontent.com/
 forest_background = simplegui.load_image("https://static.photocrowd.com/upl/3m/cms.Wl4JJNTjmGx8TN459Mbw-hd.jpeg")
 plains_background = simplegui.load_image("https://mail.google.com/mail/u/0/?ui=2&view=btop&ver=j7zj3zgaig55#attid%253Datt_177fe8aead444384_0.1_f_klv7qzs50")
 plains_character = simplegui.load_image("https://mail.google.com/mail/u/0/?ui=2&view=btop&ver=j7zj3zgaig55#attid%253Datt_177fe8aead444384_0.2_f_klv7s8lx1")
-
-import simplegui
-import random
 
 #Attributes Lists
 
@@ -44,8 +41,11 @@ class Profile:
         self.oracle_attributes = []
         self.known_attributes = ["","","","","","","","",""]
         self.display_known = False
+        self.same_traits = 0
         
     def new_attributes(self):
+        x = []
+        self.same_traits = 0
         self.attributes = []
         self.attributes.append("Location: "+str(self.villager_location))
         self.first_name = random.choice(first_names)
@@ -68,8 +68,12 @@ class Profile:
         self.attributes.append("Trait: "+str(self.trait))
         for i in range(len(self.attributes)):
             if self.attributes[i] == self.oracle_attributes[i]:
-                if self.oracle_attributes[i] not in self.known_attributes:
-                    self.known_attributes[i] = self.oracle_attributes[i]
+                self.same_traits += 1
+                x.append(i)
+        for n in range(self.same_traits):
+            if self.same_traits >= 2:
+                i = x[n]
+                self.known_attributes[i] = self.oracle_attributes[i]
         
     def oracle_attribute(self):
         self.oracle_attributes = []
@@ -108,20 +112,40 @@ class Profile:
                     self.villager_location = locations[i+1]
                 self.attributes[0] = "Location: "+str(self.villager_location)
                 self.new_attributes()
+                if self.villager_location == locations[1]:
+                    self.background = forest_background
+                    self.villager_type = forest_character_bust
+                #elif self.villager_location == locations[4]:
+                #    self.background = plains_background
+                else:
+                    self.background = forest_background
+                    self.villager_type = forest_character_bust
                 break
+                
+    def Option_1(self):
+        self.question = "You: Do you know the Oracle?"
+        if self.same_traits >= 2:
+            self.response = "Villager: Yeah, I know the Oracle."
+        elif self.same_traits < 2:
+            self.response = "Villager: No, I don't know who that is."
+    
 Guy1 = Profile()
 Guy1.oracle_attribute()
 Guy1.new_attributes()
+Guy1.change_location()
 
 def profile_draw(canvas):
-    canvas.draw_polygon([(5,195),(600,195),(600,5),(5,5)],10,"Orange","White")
+    canvas.draw_polygon([(5,395),(350,395),(350,205),(5,205)],10,"Orange","White")
     text_box = "Text Box"
-    text_y = 25
+    text_y = 224
     canvas.draw_text(text_box,[12,text_y],18,"Black")
+    canvas.draw_image(Guy1.background,(Guy1.background.get_width()/2,Guy1.background.get_height()/2),(Guy1.background.get_width(),Guy1.background.get_height()),(475,200),(240,400))
+    canvas.draw_image(Guy1.villager_type,(Guy1.villager_type.get_width()/2,Guy1.villager_type.get_height()/2),(Guy1.villager_type.get_width(),Guy1.villager_type.get_height()),(475,200),(240,400))
+
     
     if Guy1.display_known == False:
-        canvas.draw_polygon([(5,205),(350,205),(350,395),(5,395)],10,"Cyan","White")
-        text_y = 224
+        canvas.draw_polygon([(5,195),(350,195),(350,5),(5,5)],10,"Cyan","White")
+        text_y = 24
         villager_text = "Villager Attributes"
         canvas.draw_text(villager_text,[12,text_y],18,"Black")
         text_y += 18
@@ -129,19 +153,27 @@ def profile_draw(canvas):
             canvas.draw_text(Guy1.attributes[i],[12,text_y],18,"Black")
             text_y += 18
     if Guy1.display_known == True:
-        canvas.draw_polygon([(5,205),(350,205),(350,395),(5,395)],10,"Red","White")
-        text_y = 224
+        canvas.draw_polygon([(5,195),(350,195),(350,5),(5,5)],10,"Red","White")
+        text_y = 24
         known_text = "Known Oracle Attributes"
         canvas.draw_text(known_text,[12,text_y],18,"Black")
         text_y += 18
         for i in range(len(Guy1.known_attributes)):
             canvas.draw_text(Guy1.known_attributes[i],[12,text_y],18,"Black")
             text_y += 18
+
+def text_draw(canvas):
+    Guy1.Option_1()
+    hello_text = "Villager: Hello Traveler"
+    canvas.draw_text(hello_text,[12,224+18],18,"Black")
+    canvas.draw_text(Guy1.question,[12,(224+18+18)],18,"Black")
+    canvas.draw_text(Guy1.response,[12,(224+18+18+18)],18,"Black")
             
 print(Guy1.oracle_attributes)
-
+    
 def draw(canvas):
     profile_draw(canvas)
+    text_draw(canvas)
             
 frame = simplegui.create_frame("Oracle",600,400)
 frame.set_draw_handler(draw)
@@ -149,4 +181,3 @@ frame.add_button("Change Location",Guy1.change_location)
 frame.add_button("Meet New Villager",Guy1.new_attributes)
 frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
 frame.start()
-#>>>>>>> main
