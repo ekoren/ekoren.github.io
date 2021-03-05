@@ -1,6 +1,61 @@
 import simplegui
 import random
 
+welcome = True
+welcome_timer = 840
+speed = 5
+
+Left = False
+Right = False
+Up = False
+Down = False
+
+message1 = "Welcome to the forest"
+message2 = "you are stranded here"
+message3 = "the trees are tall"
+message4 = "the fog is thick"
+message5 = "you cant see far"
+message6 = "try and find a way out"
+message7 = "Good Luck!"
+
+messages = [message1, message2, message3, message4, message5, message6, message7]
+
+x = 0
+y = 0
+
+pos = [200, 150]
+
+# These are the images of the game
+snake = simplegui.load_image("https://static.wixstatic.com/media/771967_ebc1c90a92f844d4b2cb6ab659ccf69c~mv2_d_3841_2551_s_4_2.png/v1/fill/w_352,h_232,al_c,q_85,usm_0.66_1.00_0.01/inland%20tai.webp")
+leviathan = simplegui.load_image("https://vignette.wikia.nocookie.net/monsterhunter/images/e/ef/3rdGen-Lagiacrus_Render_001.png")
+gold_chest = simplegui.load_image("https://kutv.com/resources/media/ab4d998c-6a4e-45f4-a4e7-4bb5ef744bb1-large16x9_gettytreasure.jpg?1592242653877")
+megalodon = simplegui.load_image("https://2e.aonprd.com/Images/Monsters/Shark_Megalodon.png")
+coffee = simplegui.load_image("https://pngimg.com/uploads/coffee_beans/coffee_beans_PNG97294.png")
+gold_bars = simplegui.load_image("https://pngimg.com/uploads/gold/gold_PNG11028.png")
+avatar = simplegui.load_image("https://www.pixelscrapper.com/sites/default/files/styles/456_scale/public/s3fs-user-content/graphic-image/user-143727/node-250588/3-d-tropical-fabric-pear-element-graphic-dimensional-look-green-and-pink.png")
+forest = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKLnQQnfq1NA4QhAlxCnXVmbFw1SBbZFph3GD-GlvyThYdq5lH:https://pbs.twimg.com/media/DQS-994W0AQZMvJ.jpg&usqp=CAU")
+# Handler for mouse click
+def start():
+    global welcome
+    welcome = False
+
+
+    
+# Handler to draw on canvas
+def draw(canvas):
+    global welcome_timer, welcome
+    imageWidth = forest.get_width()
+    imageHeight = forest.get_height()
+    canvas.draw_image(forest, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [200, 150], [400, 300])
+    
+    if welcome == True:
+        welcome_timer -= 1
+        i = int(welcome_timer/120)%len(messages)
+        canvas.draw_text(messages[6-i], [50,112], 26, "Red")
+        if welcome_timer == 0:
+            welcome = False
+    
+
 #Images
 
 forest_character_bust = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423654421954610/Untitled17_20210302134644.png?width=422&height=422")
