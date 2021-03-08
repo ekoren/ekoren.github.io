@@ -54,7 +54,29 @@ def mountain_welcome(canvas):
         canvas.draw_text(messages[6-i], [28, 90], 26, "Purple")
         if welcome_timer == 0:
             welcome = False
-      
+
+#Magpie
+
+ask_food_directly= ['food', 'foods', 'eat', 'eats', 'hungry', 'meal', 'meals', 'consume', 'taste', 'tasty']
+ask_food_indirectly= ['goat meat', 'fish', 'cheese', 'papaya', 'papayas', 'potato', 'potatoes']
+
+ask_location_directly= ['live', 'location', 'region', 'reside', 'house', 'home', 'where']  
+ask_location_indirectly= ['plain', 'plains', 'valley', 'forest', 'forests', 'woods', 'mountain', 'mountains', 'coast', 'coastline', 'ocean', 'sea']
+
+ask_age_directly = ['old', 'age', 'young', 'years', 'long', 'born'] 
+ask_age_indirectly = ['17', '36', '43', '59', '75', '107', 'seventeen', 'thirty-six', 'forty-three',  'fifty-nine', 'seventy-five', 'one hundred seven']  
+
+ask_job_directly= ['work', 'job', 'occupation', 'money', 'a living']
+ask_job_indirectly= ['bard', 'fisherman', 'scribe', 'writer', 'warrior', 'carpenter', 'noble', 'fishing']
+
+ask_hobby_directly= ['hobby', 'activity', 'fun', 'pastime']
+ask_hobby_indirectly= ['contemplate', 'watch', 'hunt', 'games', 'play', 'walk', 'children', 'animals', 'birds', 'shore', 'meaning']
+
+ask_orgin_directly=  [ 'origin', 'tribe']
+ask_orgin_indirectly= ['earth', 'water', 'fire', 'air']
+
+ask_travel_directly= ['travel', 'move', 'navigate', 'vehicle', 'ride', 'transportation', 'transport']
+ask_travel_indirectly=['camel', 'donkey', 'boat', 'horseback', 'walking', 'walk', 'horse']
 
 
 #Images
@@ -91,6 +113,8 @@ class Profile:
     def __init__(self):
         self.villager_location = random.choice(locations)
         self.oracle_location = random.choice(locations)
+        self.asked_question = ""
+        self.question_typing = ""
         self.occupation = ""
         self.food = ""
         self.travel = ""
@@ -101,7 +125,7 @@ class Profile:
         self.name = ""
         self.attributes = []
         self.oracle_attributes = []
-        self.known_attributes = ["","","","","","","","",""]
+        self.known_attributes = ["Location: ?","Name: ?","Occupation: ?","Food: ?","Travel: ?","Age: ?","Orgin: ?","Hobby: ?","Trait: ?"]
         self.display_known = False
         self.same_traits = 0
         self.attributes_text = []
@@ -195,77 +219,77 @@ class Profile:
                 break
                 
     def ask(self):
+        self.hellos = ["Villager: Hello Traveler","Villager: Welcome to the "+str(self.villager_location)]
+        self.hello_text = random.choice(self.hellos)
         self.question = "You: Do you know the Oracle?"
         if self.same_traits >= 2:
             self.response = "Villager: Yeah, I know the Oracle."
         elif self.same_traits < 2:
             self.response = "Villager: No, I don't know who that is."
-    
-    def Option_1(self):
-        self.question = "You: Where is he?"
-        if self.attributes[0] == self.oracle_attributes[0]:
-            if self.same_traits >= 2:
-                self.response = "Villager: He's at "+str(self.attributes_text[0])+"."
-                self.known_attributes[0] = self.oracle_attributes[0]
-            else:
-                self.response = "Villager: I don't know where he is."
-        else:
-            self.response = "Villager: I don't know where he is."
-    def Option_2(self):
-        self.question = "You: What's his job?"
-        if self.attributes[2] == self.oracle_attributes[2]:
-            if self.same_traits >= 2:
-                self.response = "Villager: He is a "+str(self.attributes_text[2])+"."
-                self.known_attributes[2] = self.oracle_attributes[2]
-            else:
-                self.response = "Villager: I don't know what he does."
-        else:
-            self.response = "Villager: I don't know what he does."
-    def Option_3(self):
-        self.question = "You: What's his favorite food?"
-        if self.attributes[3] == self.oracle_attributes[3]:
-            if self.same_traits >= 2:
-                self.response = "Villager: He eats "+str(self.attributes_text[3])+"."
-                self.known_attributes[3] = self.oracle_attributes[3]
-            else:
-                self.response = "Villager: I don't know what he eats."
-        else:
-            self.response = "Villager: I don't know what he eats."
-    def Option_4(self):
-        self.question = "You: How does he get around?"
-        if self.attributes[4] == self.oracle_attributes[4]:
-            if self.same_traits >= 2:
-                self.response = "Villager: He travels by "+str(self.attributes_text[4])+"."
-                self.known_attributes[4] = self.oracle_attributes[4]
-            else:
-                self.response = "Villager: I don't know how he travels."
-        else:
-            self.response = "Villager: I don't know how he travels."
-    def Option_5(self):
-        self.question = "You: Where does he come from?"
-        if self.attributes[6] == self.oracle_attributes[6]:
-            if self.same_traits >= 2:
-                self.response = "Villager: He's from the "+str(self.attributes_text[6])+" nation."
-                self.known_attributes[6] = self.oracle_attributes[6]
-            else:
-                self.response = "Villager: I don't know where he is from."
-        else:
-            self.response = "Villager: I don't know where he is from."
-    def Option_6(self):
-        self.question = "You: Whhat does he do for fun?"
-        if self.attributes[7] == self.oracle_attributes[7]:
-            if self.same_traits >= 2:
-                self.response = "Villager: He "+str(self.attributes_text[7])+"."
-                self.known_attributes[7] = self.oracle_attributes[7]
-            else:
-                self.response = "Villager: I don't know what he does."
-        else:
-            self.response = "Villager: I don't know what he does."
-    def Option_7(self):
+            
+    def ask_question(self):
         if self.same_traits >= 2:
-            self.question = "You: What's he like?"
-            self.response = "Villager: He's is "+str(self.attributes_text[8])+"."
-            self.known_attributes[8] = self.oracle_attributes[8]
+            if self.attributes[3] == self.oracle_attributes[3]:
+                for i in range(len(ask_food_directly)):
+                    if ask_food_directly[i] in self.asked_question:
+                        self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
+                        self.known_attributes[3] = self.oracle_attributes[3]
+                for i in range(len(ask_food_indirectly)):
+                    if ask_food_indirectly[i] in self.asked_question:
+                        self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
+                        self.known_attributes[3] = self.oracle_attributes[3]
+            for i in range(len(ask_location_directly)):
+                if ask_location_directly[i] in self.asked_question:
+                    self.response = "Villager: He's at "+str(self.attributes_text[0]+".")
+                    self.known_attributes[0] = self.oracle_attributes[0]
+            for i in range(len(ask_location_indirectly)):
+                if ask_location_indirectly[i] in self.asked_question:
+                    self.response = "Villager: He's at "+str(self.attributes_text[0]+".")
+                    self.known_attributes[0] = self.oracle_attributes[0]
+            for i in range(len(ask_age_directly)):
+                if ask_age_directly[i] in self.asked_question:
+                    self.response = "Villager: He's "+str(self.attributes_text[5])+" years old."
+                    self.known_attributes[5] = self.oracle_attributes[5]
+            for i in range(len(ask_age_indirectly)):
+                if ask_age_indirectly[i] in self.asked_question:
+                    self.response = "Villager: He's "+str(self.attributes_text[5])+" years old."
+                    self.known_attributes[5] = self.oracle_attributes[5]
+            if self.attributes[2] == self.oracle_attributes[2]:
+                for i in range(len(ask_job_directly)):
+                    if ask_job_directly[i] in self.asked_question:
+                        self.response = "Villager: He's a "+str(self.attributes_text[2])+"."
+                        self.known_attributes[2] = self.oracle_attributes[2]
+                for i in range(len(ask_job_indirectly)):
+                    if ask_job_indirectly[i] in self.asked_question:
+                        self.response = "Villager: He's a "+str(self.attributes_text[2])+"."
+                        self.known_attributes[2] = self.oracle_attributes[2]
+            if self.attributes[7] == self.oracle_attributes[7]:
+                for i in range(len(ask_hobby_directly)):
+                    if ask_hobby_directly in self.asked_question:
+                        self.response = "Villager: He likes to "+str(self.attributes_text[7])+"."
+                        self.known_attributes[7] = self.oracle_attributes[7]
+                for i in range(len(ask_hobby_indirectly)):
+                    if ask_hobby_indirectly[i] in self.asked_question:
+                        self.response = "Villager: He likes to "+str(self.attributes_text[7])+"."
+                        self.known_attributes[7] = self.oracle_attributes[7]
+            if self.attributes[6] == self.oracle_attributes[6]:
+                for i in range(len(ask_orgin_directly)):
+                    if ask_orgin_directly[i] in self.asked_question:
+                        self.response = "Villager: He's from "+str(self.attributes_text[6])+"."
+                        self.known_attributes[6] = self.oracle_attributes[6]
+                for i in range(len(ask_orgin_indirectly)):
+                    if ask_orgin_indirectly[i] in self.asked_question:
+                        self.response = "Villager: He's from "+str(self.attributes_text[6])+"."
+                        self.known_attributes[6] = self.oracle_attributes[6]
+            if self.attributes[4] == self.oracle_attributes[4]:
+                for i in range(len(ask_travel_directly)):
+                    if ask_travel_directly[i] in self.question:
+                        self.response = "Villager: He gets around using "+str(self.attributes_text[4])+"."
+                        self.known_attributes[4] = self.oracle_attributes[4]
+                for i in range(len(ask_travel_indirectly)):
+                    if ask_travel_indirectly[i] in self.asked_question:
+                        self.response = "Villager: He gets around using "+str(self.attributes_text[4])+"."
+                        self.known_attributes[4] = self.oracle_attributes[4]
         else:
             self.response = "Villager: I don't know him."
     
@@ -275,7 +299,7 @@ Guy1.new_attributes()
 
 def profile_draw(canvas):
     canvas.draw_polygon([(5,395),(350,395),(350,205),(5,205)],10,"Orange","White")
-    text_box = "Text Box"
+    text_box = "Dialogue Box"
     text_y = 224
     canvas.draw_text(text_box,[12,text_y],18,"Black")
     canvas.draw_image(Guy1.background,(Guy1.background.get_width()/2,Guy1.background.get_height()/2),(Guy1.background.get_width(),Guy1.background.get_height()),(475,200),(240,400))
@@ -301,28 +325,103 @@ def profile_draw(canvas):
             canvas.draw_text(Guy1.known_attributes[i],[12,text_y],18,"Black")
             text_y += 18
 
-def text_draw(canvas):
-    hello_text = "Villager: Hello Traveler"
-    canvas.draw_text(hello_text,[12,224+18],18,"Black")
-    canvas.draw_text(Guy1.question,[12,(224+18+18)],18,"Black")
-    canvas.draw_text(Guy1.response,[12,(224+18+18+18)],18,"Black")
+def typing(key):
+    if key == simplegui.KEY_MAP['1']:
+        Guy1.question_typing += '1'
+    elif key == simplegui.KEY_MAP['2']:
+        Guy1.question_typing += '2'
+    elif key == simplegui.KEY_MAP['3']:
+        Guy1.question_typing += '3'
+    elif key == simplegui.KEY_MAP['4']:
+        Guy1.question_typing += '4'
+    elif key == simplegui.KEY_MAP['5']:
+        Guy1.question_typing += '5'
+    elif key == simplegui.KEY_MAP['6']:
+        Guy1.question_typing += '6'
+    elif key == simplegui.KEY_MAP['7']:
+        Guy1.question_typing += '7'
+    elif key == simplegui.KEY_MAP['8']:
+        Guy1.question_typing += '8'
+    elif key == simplegui.KEY_MAP['9']:
+        Guy1.question_typing += '9'
+    elif key == simplegui.KEY_MAP['a']:
+        Guy1.question_typing += 'a'
+    elif key == simplegui.KEY_MAP['b']:
+        Guy1.question_typing += 'b'
+    elif key == simplegui.KEY_MAP['c']:
+        Guy1.question_typing += 'c'
+    elif key == simplegui.KEY_MAP['d']:
+        Guy1.question_typing += 'd'
+    elif key == simplegui.KEY_MAP['e']:
+        Guy1.question_typing += 'e'
+    elif key == simplegui.KEY_MAP['f']:
+        Guy1.question_typing += 'f'
+    elif key == simplegui.KEY_MAP['g']:
+        Guy1.question_typing += 'g'
+    elif key == simplegui.KEY_MAP['h']:
+        Guy1.question_typing += 'h'
+    elif key == simplegui.KEY_MAP['i']:
+        Guy1.question_typing += 'i'
+    elif key == simplegui.KEY_MAP['j']:
+        Guy1.question_typing += 'j'
+    elif key == simplegui.KEY_MAP['k']:
+        Guy1.question_typing += 'k'
+    elif key == simplegui.KEY_MAP['l']:
+        Guy1.question_typing += 'l'
+    elif key == simplegui.KEY_MAP['m']:
+        Guy1.question_typing += 'm'
+    elif key == simplegui.KEY_MAP['n']:
+        Guy1.question_typing += 'n'
+    elif key == simplegui.KEY_MAP['o']:
+        Guy1.question_typing += 'o'
+    elif key == simplegui.KEY_MAP['p']:
+        Guy1.question_typing += 'p'
+    elif key == simplegui.KEY_MAP['q']:
+        Guy1.question_typing += 'q'
+    elif key == simplegui.KEY_MAP['r']:
+        Guy1.question_typing += 'r'
+    elif key == simplegui.KEY_MAP['s']:
+        Guy1.question_typing += 's'
+    elif key == simplegui.KEY_MAP['t']:
+        Guy1.question_typing += 't'
+    elif key == simplegui.KEY_MAP['u']:
+        Guy1.question_typing += 'u'
+    elif key == simplegui.KEY_MAP['v']:
+        Guy1.question_typing += 'v'
+    elif key == simplegui.KEY_MAP['w']:
+        Guy1.question_typing += 'w'
+    elif key == simplegui.KEY_MAP['x']:
+        Guy1.question_typing += 'x'
+    elif key == simplegui.KEY_MAP['y']:
+        Guy1.question_typing += 'y'
+    elif key == simplegui.KEY_MAP['z']:
+        Guy1.question_typing += 'z'
+    elif key == simplegui.KEY_MAP['space']:
+        Guy1.question_typing += ' '
+    elif key == simplegui.KEY_MAP['0']:
+        Guy1.asked_question = Guy1.question_typing
+        Guy1.question = "You: "+str(Guy1.question_typing)+"."
+        Guy1.question_typing = ""
+        Guy1.ask_question()
             
+def text_draw(canvas):
+    typing_area = "Typing will appear here:"
+    canvas.draw_text(Guy1.hello_text,[12,224+18],18,"Black")
+    canvas.draw_text(Guy1.question,[12,(224+18+18)],18,"Black")
+    canvas.draw_text(typing_area,[12,(224+18*8)],18,"Black")
+    canvas.draw_text(Guy1.question_typing,[12,(224+18*9)],18,"Black")
+    canvas.draw_text(Guy1.response,[12,(224+18+18+18)],18,"Black")
+    
 print(Guy1.oracle_attributes)
     
 def draw(canvas):
     profile_draw(canvas)
     text_draw(canvas)
-            
+    
 frame = simplegui.create_frame("Oracle",600,400)
 frame.set_draw_handler(draw)
+frame.set_keydown_handler(typing)
 frame.add_button("Change Location",Guy1.change_location)
 frame.add_button("Meet New Villager",Guy1.new_attributes)
 frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
-frame.add_button("Ask Location",Guy1.Option_1)
-frame.add_button("Ask Job",Guy1.Option_2)
-frame.add_button("Ask Food",Guy1.Option_3)
-frame.add_button("Ask Travel",Guy1.Option_4)
-frame.add_button("Ask Orgin",Guy1.Option_5)
-frame.add_button("Ask Hobby",Guy1.Option_6)
-frame.add_button("Ask Trait",Guy1.Option_7)
 frame.start()
