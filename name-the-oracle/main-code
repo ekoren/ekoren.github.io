@@ -17,11 +17,11 @@ def forest_welcome(canvas):
     messages = [message1, message2, message3, message4, message5, message6, message7]
 
     # Handler to draw on canvas
-    def draw(canvas):
+    def welcome_draw(canvas):
         global welcome_timer, welcome
-        imageWidth = forest.get_width()
-        imageHeight = forest.get_height()
-        canvas.draw_image(forest, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [200, 150], [400, 300])
+        imageWidth = forest_background.get_width()
+        imageHeight = forest_background.get_height()
+        canvas.draw_image(forest_background, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [200, 150], [400, 300])
 
         if welcome == True:
             welcome_timer -= 1
@@ -100,7 +100,7 @@ traits = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungratef
 first_names = ["Aldus","Daw","Col","Amis","Bate","Dicun","Elis","Elric","Firmin","Hamo","Hankin","Hann","Herry","Jackin","Judd","Nichol","Noll","Stace"]							
 last_names = ["Ashdown","Baker","Bennett","Biggie","Clarke","Mannering","Walter","Webb","Payne","Ward","Taylor","Hughes","Godfrey","Nash","Rolfe","Cooper"]
 
-Oracles = ["Nate Trier","Katrina Woodsworth","Boomy","Buster","Draginthese","GM Soneus Badaches","jim-jam","Jared","Geoffe","Geoff Baysos","Duffy Goldifold"]
+Oracles = ["nate trier","katrina woodsworth","boomy","buster","draginthese","gm soneus badaches","jim jam","jared","geoffe","geoff baysos","duffy goldifold"]
 Oracle_Locations = ["Mountains","Mountains","Mountains","Coast","Valley","Plains","Forest","Coast","Forest","Mountains","Coast"]
 Oracle_Occupations = ["Nobel","Fisherman","Warrior","Carpenter","Warrior","Bard","Warrior","Bard","Bard","Fisherman","Fisherman"]
 Oracle_Foods = ["Fish","Cheese","Cheese","Goat Meat","Cheese","Fish","Fish","Cheese","Cheese","Goat Meat","Goat Meat"]
@@ -113,6 +113,7 @@ class Profile:
     def __init__(self):
         self.villager_location = random.choice(locations)
         self.oracle_location = random.choice(locations)
+        self.win = False
         self.asked_question = ""
         self.question_typing = ""
         self.occupation = ""
@@ -129,6 +130,16 @@ class Profile:
         self.display_known = False
         self.same_traits = 0
         self.attributes_text = []
+        
+    def is_win(self):
+        self.hello_text = "Who's the Oracle?"
+        self.question = "Answer in the ask question box"
+        self.response = "Hint: no capitols"
+        
+        if self.asked_question == self.attributes_text[1]:
+            self.win = True
+        else:
+            self.win = False
         
     def new_attributes(self):
         x = []
@@ -188,7 +199,7 @@ class Profile:
                 self.oracle_attributes.append("Travel: "+str(self.travel))
                 self.attributes_text.append(self.travel)
                 self.age = Oracle_Ages[i]
-                self.oracle_attributes.append("Age: "+str(self.age))
+                self.oracle_attributes.append("Age: "+str(self.age)+" years old")
                 self.attributes_text.append(self.age)
                 self.orgin = Oracle_Orgins[i]
                 self.oracle_attributes.append("Orgin: "+str(self.orgin))
@@ -222,15 +233,15 @@ class Profile:
         self.hellos = ["Villager: Hello Traveler","Villager: Welcome to the "+str(self.villager_location)]
         self.hello_text = random.choice(self.hellos)
         self.question = "You: Do you know the Oracle?"
-        if self.same_traits >= 2:
+        if self.same_traits >= 3:
             self.response = "Villager: Yeah, I know the Oracle."
-        elif self.same_traits < 2:
+        elif self.same_traits < 3:
             self.response = "Villager: No, I don't know who that is."
             
     def ask_question(self):
-        if self.same_traits >= 2:
-            if self.attributes[3] == self.oracle_attributes[3]:
-                for i in range(len(ask_food_directly)):
+        if self.same_traits >= 3:
+            for i in range(len(ask_food_directly)):
+                if self.attributes[3] == self.oracle_attributes[3]:
                     if ask_food_directly[i] in self.asked_question:
                         self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
                         self.known_attributes[3] = self.oracle_attributes[3]
@@ -265,7 +276,7 @@ class Profile:
                         self.known_attributes[2] = self.oracle_attributes[2]
             if self.attributes[7] == self.oracle_attributes[7]:
                 for i in range(len(ask_hobby_directly)):
-                    if ask_hobby_directly in self.asked_question:
+                    if ask_hobby_directly[i] in self.asked_question:
                         self.response = "Villager: He likes to "+str(self.attributes_text[7])+"."
                         self.known_attributes[7] = self.oracle_attributes[7]
                 for i in range(len(ask_hobby_indirectly)):
@@ -284,11 +295,11 @@ class Profile:
             if self.attributes[4] == self.oracle_attributes[4]:
                 for i in range(len(ask_travel_directly)):
                     if ask_travel_directly[i] in self.question:
-                        self.response = "Villager: He gets around using "+str(self.attributes_text[4])+"."
+                        self.response = "Villager: He gets around by "+str(self.attributes_text[4])+"."
                         self.known_attributes[4] = self.oracle_attributes[4]
                 for i in range(len(ask_travel_indirectly)):
                     if ask_travel_indirectly[i] in self.asked_question:
-                        self.response = "Villager: He gets around using "+str(self.attributes_text[4])+"."
+                        self.response = "Villager: He gets around by "+str(self.attributes_text[4])+"."
                         self.known_attributes[4] = self.oracle_attributes[4]
         else:
             self.response = "Villager: I don't know him."
@@ -400,28 +411,33 @@ def typing(key):
         Guy1.question_typing += ' '
     elif key == simplegui.KEY_MAP['0']:
         Guy1.asked_question = Guy1.question_typing
-        Guy1.question = "You: "+str(Guy1.question_typing)+"."
+        Guy1.question = "You: "+str(Guy1.question_typing)+"?"
         Guy1.question_typing = ""
         Guy1.ask_question()
             
 def text_draw(canvas):
+    hint = "Hint: Press ZERO to ask a question"
     typing_area = "Typing will appear here:"
-    canvas.draw_text(Guy1.hello_text,[12,224+18],18,"Black")
-    canvas.draw_text(Guy1.question,[12,(224+18+18)],18,"Black")
+    canvas.draw_text(hint,[362,24],18,"White")
+    canvas.draw_text(Guy1.hello_text,[12,224+18*2],18,"Black")
+    canvas.draw_text(Guy1.question,[12,(224+18*3)],18,"Black")
     canvas.draw_text(typing_area,[12,(224+18*8)],18,"Black")
     canvas.draw_text(Guy1.question_typing,[12,(224+18*9)],18,"Black")
-    canvas.draw_text(Guy1.response,[12,(224+18+18+18)],18,"Black")
+    canvas.draw_text(Guy1.response,[12,(224+18*4)],18,"Black")
     
 print(Guy1.oracle_attributes)
     
 def draw(canvas):
     profile_draw(canvas)
     text_draw(canvas)
+    forest_welcome(canvas)
     
 frame = simplegui.create_frame("Oracle",600,400)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(typing)
+frame.add_button("Guess the oracle",Guy1.is_win)
 frame.add_button("Change Location",Guy1.change_location)
 frame.add_button("Meet New Villager",Guy1.new_attributes)
 frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
-frame.start()
+if Guy1.win == False:
+    frame.start()
