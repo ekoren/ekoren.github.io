@@ -167,8 +167,8 @@ valley_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/Val
 valley_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/ValleyRunLeft.png")
 valley_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/ValleyRunRight.png")
 coast_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
-coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
-coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
+coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__4_-removebg-preview.png")
+coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
 
 #Attributes Lists
 
