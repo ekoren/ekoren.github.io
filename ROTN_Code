@@ -1,452 +1,499 @@
-# CodeSkulptor runs Python programs in your browser.
-# Click the upper left button to run this simple demo.
- 
-# CodeSkulptor is tested to run in recent versions of
-# Chrome, Firefox, and Safari.
- 
 import simplegui
 import random
- 
-#Welcome
-message = "My Clan has Disowned me,"
-message1 = "My wife has left me,"
-message2 = "My brothers are dead..."
-message3 = "...I know what must be done..."
-message4 = "I must get my revenge"
-message5 = "Welcome to revenge of the ninja"
-yeet = "Die you dog"
-welcome = True
-melee = False
-intro = True 
 
-
-#Key Handles
-UP = False
-DOWN = False
-LEFT = False
-RIGHT = False
-
-BLOCK = False
-LEFTSTRIKE = False
-RIGHTSTRIKE = False
-POWERMOVE = False
-
-
-#Player Attack Animations
-action_image = None
-action_timer = 0
-opponent_action = False
- 
-#General
-timer = 0
-star_timer = 0
-
-star_count = 10
-
-quip_timer = 180
-intro_timer = 170
-
- 
-#images:
-
-welcome_background = simplegui.load_image("https://i.pinimg.com/originals/4d/c6/47/4dc64744eb81d936e20b6800b3b5a8b7.jpg")
- 
-opponent_clone_1 = simplegui.load_image("https://ekoren.github.io/opponent_clone_1.png")
-
-pekka_texture = simplegui.load_image("https://ekoren.github.io/pekka.jpeg")
-pekka_block = simplegui.load_image("https://ekoren.github.io/pekka_block.jpeg")
-pekka_punch = simplegui.load_image("https://ekoren.github.io/pekka_punch.jpeg")
-pekka_strike_left = simplegui.load_image("https://ekoren.github.io/pekka_strike_left..jpeg")
-pekka_strike_right = simplegui.load_image("https://ekoren.github.io/pekka_strike_right.jpeg")
-
-samura_stand = simplegui.load_image("https://ekoren.github.io/samurai_stand.png")
-
-ninja1 = simplegui.load_image("https://ekoren.github.io/ninja_1.png")
-ninja_stand = simplegui.load_image("https://ekoren.github.io/New%20Piskel.png")
-ninja_star = simplegui.load_image("https://ekoren.github.io/ninja_star.png")
-ninja_leftstrike = simplegui.load_image("https://ekoren.github.io/pixil-frame-2 (1).png")
-ninja_rightstrike = simplegui.load_image("https://ekoren.github.io/pixil-frame-3.png")
-ninja_powermove = simplegui.load_image("https://ekoren.github.io/pixil-frame-1 (2).png")
-ninja_block = simplegui.load_image("https://i.pinimg.com/originals/42/65/95/42659539a84de9a8a6aeec22ba9dcafa.jpg") 
-samura_strike_left = simplegui.load_image("https://ekoren.github.io/samurai_strike_left.png")
-samura_strike_right = simplegui.load_image("https://ekoren.github.io/samurai_strike_right.png")
- 
- 
-class Ninja:
+class welcome:
     
     def __init__(self):
-        self.strength = 10
+        self.welcome = False
+        self.welcome_timer = 840
         self.speed = 5
-        self.health = 100
-        self.image = ninja_stand
-        self.x = 200
-        self.y = 150
-        self.star_throw = False
-        self.star_fly = False
-        self.dir_x = 1
-        self.star_used = True
-        self.star_dir_x = 1
-        self.pos = [self.x, self.y]
-        self.star_pos = [0,0]
-        self.star_count = star_count
-        self.size = (50,50)
+        self.image = forest_background
+        self.villager_type = forest_character_bust
+        self.messages = ["","","","","","","",""]
         
-    def move(self):
-        if RIGHT == True:
-            self.x += self.speed
-            self.dir_x = 1
-            
-        if LEFT == True:
-            self.x -= self.speed
-            self.dir_x = -1
-            
-        if UP == True:
-            self.y -= self.speed
-            
-        if DOWN == True:
-            self.y += self.speed
-            
-        if self.x > 400:
-            self.x = 0
-        if self.x < 0:
-            self.x = 400
-            
-        if self.y > 300:
-            self.y = 0
-        if self.y < 0:
-            self.y = 300
-            
-        self.pos = [self.x, self.y]
-        
-    def playerinput(self, canvas):
-        global action_image,action_timer
-        
-        if action_timer == 0:
-            opponent_action = BLOCK or LEFTSTRIKE or RIGHTSTRIKE or POWERMOVE
-        
-            if BLOCK:
-                action_image = ninja_block
-                action_timer = 60
-            if LEFTSTRIKE:
-                action_image = ninja_leftstrike
-                action_timer = 30
-            if RIGHTSTRIKE:
-                action_image = ninja_rightstrike
-                action_timer = 30
-            if POWERMOVE:
-                action_image = ninja_powermove
-                action_timer = 45
-            
-        
-            if melee and opponent_action:
+    def change_location(self):
+        for i in range(len(locations)):
+            if Guy1.villager_location == locations[i]:
+                if i == (len(locations)-1):
+                    Guy1.villager_location = locations[0]
+                elif i != (len(locations)-1):
+                    Guy1.villager_location = locations[i+1]
+                Guy1.attributes[0] = "Location: "+str(Guy1.villager_location)
+                Guy1.new_attributes()
+                if Guy1.villager_location == locations[1]:
+                    self.forest_welcome()
+                elif Guy1.villager_location == locations[2]:
+                    self.mountain_welcome()
+                else:
+                    self.forest_welcome()
+                break
 
-                samura.opponent_move(canvas, self)
-                opponent_action = False
+    def forest_welcome(self):
+        self.welcome = True
+        self.welcome_timer = 840
+        self.speed = 5
+        self.image = forest_background
+        self.villager_type = forest_character_bust
 
+        message1 = "Welcome to the forest"
+        message2 = "you are stranded here"
+        message3 = "the trees are tall"
+        message4 = "the fog is thick"
+        message5 = "you cant see far"
+        message6 = "try and find a way out"
+        message7 = "Good Luck!"
+        self.messages = [message1, message2, message3, message4, message5, message6, message7]
+
+        # Handler to draw on canvas
+    def welcome_draw(self,canvas):
+        imageWidth = self.image.get_width()
+        imageHeight = self.image.get_height()
+
+        if self.welcome == True:
+            self.welcome_timer -= 1
+            i = int(self.welcome_timer/120)%len(self.messages)
+            canvas.draw_image(self.image, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [300, 200], [600, 400])
+            canvas.draw_text(self.messages[6-i], [200,200], 26, "Red")
+            if self.welcome_timer == 0:
+                self.welcome = False
+
+    def mountain_welcome(self):
+        self.welcome = True
+        self.welcome_timer = 840
+        self.speed = 5
+        self.image = forest_background
+        self.villager_type = forest_character_bust
+
+        message1 = "Try to climb down the mountain "
+        message2 = "Find the Mineshaft "
+        message3 = "Or jump "
+        message4 = " Good luck "
+        message5 = " Welcome to Clawtooth mountain "
+        message6 = " You are deserted here "
+        message7 = " Collect information from strangers "
+        self.messages = [message1, message2, message3, message4, message5, message6, message7]
+                        
+#Magpie
+
+ask_food_directly = ['food', 'foods', 'eat', 'eats', 'hungry', 'meal', 'meals', 'consume', 'taste', 'tasty']
+ask_food_indirectly = ['goat meat', 'fish', 'cheese', 'papaya', 'papayas', 'potato', 'potatoes']
+
+ask_location_directly = ['live', 'location', 'region', 'reside', 'house', 'home', 'where']  
+ask_location_indirectly = ['plain', 'plains', 'valley', 'forest', 'forests', 'woods', 'mountain', 'mountains', 'coast', 'coastline', 'ocean', 'sea']
+
+ask_age_directly = ['old', 'age', 'young', 'years', 'long', 'born'] 
+ask_age_indirectly = ['17', '36', '43', '59', '75', '107', 'seventeen', 'thirty-six', 'forty-three',  'fifty-nine', 'seventy-five', 'one hundred seven']  
+
+ask_job_directly = ['work', 'job', 'occupation', 'money', 'a living']
+ask_job_indirectly = ['bard', 'fisherman', 'scribe', 'writer', 'warrior', 'carpenter', 'noble', 'fishing']
+
+ask_hobby_directly = ['hobby', 'activity', 'fun', 'pastime']
+ask_hobby_indirectly = ['contemplate', 'watch', 'hunt', 'games', 'play', 'walk', 'children', 'animals', 'birds', 'shore', 'meaning']
+
+ask_orgin_directly =  [ 'origin', 'tribe']
+ask_orgin_indirectly = ['earth', 'water', 'fire', 'air']
+
+ask_travel_directly = ['travel', 'move', 'navigate', 'vehicle', 'ride', 'transportation', 'transport','get around']
+ask_travel_indirectly =['camel', 'donkey', 'boat', 'horseback', 'walking', 'walk', 'horse']
+
+ask_trait_directly = ['trait','manner','habit','character','attributes']
+ask_trait_indirectly = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungrateful"]
+
+
+#Images
+
+forest_character_bust = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423654421954610/Untitled17_20210302134644.png?width=422&height=422")
+forest_character_stand_walk = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423708729540628/Untitled18_20210302163516.png?width=316&height=422")
+forest_character_walk = simplegui.load_image("https://lh3.googleusercontent.com/fife/ABSRlIoTE93zrb7BSLNpD3etcS4BMVsSibXE55wHdOU3Wnaz1TFw_E1BXOdlfagsLsVnT70_SE1cJD5hEca6g_YK_LvbFq-JGyHUgklHirgSP8rmgA8KtswITeLjazvmbhkttjR7xAw6Hkp8X4NcjMOzLbCX5zsG9hO0T4_SQResaQ-XbO5dStWVTbG5uGcae-Xd-jH8hy4uBgqOMFuvfFepmgiB1NJXVeHA0y5IlXA7W71pvfFGw4gf8TOaPwCM8rHfjAGJm6PTOk79Cge20W7dw3JrJfIAAl_lyH3Fqj4Y4jK-z-ytkKg42oxFkRyTGDUXoZ6IguXkv9psBRvanNsGMUP7BpvX7ijrWYWkkmyjrvUe0peKN0zCwgsSZyvfcafDPCJwCdWl3ySM7GeAxDzbWsdGgYv8IG9dGmvYdGP5O32PKEMcJTigvYXbcxRyLWEtwVadmqzJHdBgCi5cn3TwOxrks5nT0_wu5PWMXpTmquvf1VG7ZQgrpK0mxWxmNxH-Y4IBO2bNiRbNGan6HsJc59G9UWNHkqREs6Mkm_6n_35c3GgENaqbr_3HarGh8tThXLMsF-n_B22ZQnGZkj9guC0DtrdU0D1Fh_IrkFO_vlPDierthVva5bO-bREx0vOYpR7jiKA9EbfB6fxm4K7MCg_ljIO8dv9Yf26C94eyH40eOfqqIltCw1_mgEyAGd4D5zhIf93yDXmop_U3a8oExkAm-l0SqI4=w1366-h665-ft?authuser=0")
+forest_background = simplegui.load_image("https://static.photocrowd.com/upl/3m/cms.Wl4JJNTjmGx8TN459Mbw-hd.jpeg")
+plains_background = simplegui.load_image("https://mail.google.com/mail/u/0/?ui=2&view=btop&ver=j7zj3zgaig55#attid%253Datt_177fe8aead444384_0.1_f_klv7qzs50")
+plains_character = simplegui.load_image("https://mail.google.com/mail/u/0/?ui=2&view=btop&ver=j7zj3zgaig55#attid%253Datt_177fe8aead444384_0.2_f_klv7s8lx1")
+
+#Attributes Lists
+
+locations = ["Coast","Forest","Mountains","Valley","Plains"]
+occupations = ["Fisherman","Hunter","Nobel","Warrior","Farmer","Guard","Scribe","Bard","Carpenter"]
+foods = ["Goat Meat","Steak","Rice","Berries","Fish","Bread","Potatoes","Cheese"]
+travels = ["Horseback","Walking","Wagon","Donkey","Camel","Boat"]
+orgins = ["Earth","Air","Water","Fire"]
+hobbies = ["Walking along the river","Teaching the kids","Protecting the crops","Contemplate the meaning of life","Hunt large animals","Walk by the shore","Watch the birds"]
+traits = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungrateful"]
+first_names = ["Aldus","Daw","Col","Amis","Bate","Dicun","Elis","Elric","Firmin","Hamo","Hankin","Hann","Herry","Jackin","Judd","Nichol","Noll","Stace"]							
+last_names = ["Ashdown","Baker","Bennett","Biggie","Clarke","Mannering","Walter","Webb","Payne","Ward","Taylor","Hughes","Godfrey","Nash","Rolfe","Cooper"]
+
+Oracles = ["nate trier","katrina woodsworth","boomy","buster","draginthese","gm soneus badaches","jim jam","jared","geoffe","geoff baysos","duffy goldifold"]
+Oracle_Locations = ["Mountains","Mountains","Mountains","Coast","Valley","Plains","Forest","Coast","Forest","Mountains","Coast"]
+Oracle_Occupations = ["Nobel","Fisherman","Warrior","Carpenter","Warrior","Bard","Warrior","Bard","Bard","Fisherman","Fisherman"]
+Oracle_Foods = ["Fish","Cheese","Cheese","Goat Meat","Cheese","Fish","Fish","Cheese","Cheese","Goat Meat","Goat Meat"]
+Oracle_Travels = ["Walking","Walking","Donkey","Wagon","Horseback","Horseback","Walking","Walking","Donkey","Boat","Boat"]
+Oracle_Ages = [17,17,75,43,17,17,75,43,36,75,17]
+Oracle_Orgins = ["Water","Fire","Earth","Earth","Fire","Fire","Earth","Earth","Fire","Fire","Air"]
+
+class Profile:
     
-    def draw(self, canvas):
-        canvas.draw_image(self.image, (self.image.get_width()/2, self.image.get_height()/2), (self.image.get_width(),self.image.get_height()), (self.x,self.y), self.size)
-           
- 
-            
-            
-    def throw_star(self, canvas):
-        global star_timer, star_throw, star_count
+    def __init__(self):
+        self.villager_location = random.choice(locations)
+        self.oracle_location = random.choice(locations)
+        self.win = False
+        self.is_asked = False
+        self.asked_question = ""
+        self.question_typing = ""
+        self.occupation = ""
+        self.food = ""
+        self.travel = ""
+        self.age = ""
+        self.orgin = ""
+        self.hobby = ""
+        self.trait = ""
+        self.name = ""
+        self.attributes = []
+        self.oracle_attributes = []
+        self.known_attributes = ["Location: ?","Name: ?","Occupation: ?","Food: ?","Travel: ?","Age: ?","Orgin: ?","Hobby: ?","Trait: ?"]
+        self.display_known = False
+        self.same_traits = 0
+        self.attributes_text = []
         
-        if self.star_throw == True and self.star_count > 0:
-            samura.hit = False
-            self.star_fly = True
-            self.star_used = False
-            self.image = ninja1
-            star_timer = 60
-            self.star_count -= 1
-            self.star_x = self.x
-            self.star_y = self.y
-            self.star_pos = [self.star_x, self.star_y]
-            
-        if self.star_pos[0] <= 0 or self.star_pos[0] >= 400:
-            self.star_fly = False
-         
-        if star_timer > 0 and self.star_count > 0 and self.star_fly == True:
-            self.star_throw = False
-            star_timer -= 1
-            self.star_x += (self.speed + 2)*self.star_dir_x
-            self.star_pos = [self.star_x,self.star_y]
-            
-            canvas.draw_image(ninja_star, (430, 281), (860, 562), (self.star_x, self.star_y), (5, 5))
+    def is_win(self):
+        self.hello_text = "Who's the Oracle?"
+        self.question = "Answer in the ask question box"
+        self.response = "Hint: no capitols"
         
+        if self.asked_question == self.attributes_text[1]:
+            self.win = True
         else:
-            self.image = ninja_stand
+            self.win = False
         
-    
+    def new_attributes(self):
+        x = []
+        self.same_traits = 0
+        self.attributes = []
+        self.attributes.append("Location: "+str(self.villager_location))
+        self.first_name = random.choice(first_names)
+        self.last_name = random.choice(last_names)
+        self.name = str(self.first_name)+" "+str(self.last_name)
+        self.attributes.append("Name: "+str(self.name))
+        self.occupation = random.choice(occupations)
+        self.attributes.append("Occupation: "+str(self.occupation))
+        self.food = random.choice(foods)
+        self.attributes.append("Food: "+str(self.food))
+        self.travel = random.choice(travels)
+        self.attributes.append("Travel: "+str(self.travel))
+        self.age = random.randint(15,103)
+        self.attributes.append("Age: "+str(self.age)+" years old")
+        self.orgin = random.choice(orgins)
+        self.attributes.append("Orgin: "+str(self.orgin))
+        self.hobby = random.choice(hobbies)
+        self.attributes.append("Hobby: "+str(self.hobby))
+        self.trait = random.choice(traits)
+        self.attributes.append("Trait: "+str(self.trait))
+        self.ask()
         
-class Opponent:
-    def __init__(self, strength, speed, health, image, size):
-        self.strength = strength
-        self.speed = speed
-        self.health = health
-        self.image = image
-        self.enemy = ""
-        self.timer = 0
-        self.dir_x = 1
-        self.dir_y = 1
-        self.size = size
-        self.star_hits = 0
-        self.x = random.randint(0,400)
-        self.y = random.randint(0,300)
-        self.pos = [80, 170]
-        self.hit = False
-        self.fight = False
+    def oracle_attribute(self):
+        self.oracle_attributes = []
+        self.attributes_text = []
+        self.name = random.choice(Oracles)
+        for i in range(len(Oracles)):
+            if self.name == Oracles[i]:
+                self.location = Oracle_Locations[i]
+                self.oracle_attributes.append("Location: "+str(self.location))
+                self.attributes_text.append(self.location)
+                self.oracle_attributes.append("Name: "+str(self.name))
+                self.attributes_text.append(self.name)
+                self.occupation = Oracle_Occupations[i]
+                self.oracle_attributes.append("Occupation: "+str(self.occupation))
+                self.attributes_text.append(self.occupation)
+                self.food = Oracle_Foods[i]
+                self.oracle_attributes.append("Food: "+str(self.food))
+                self.attributes_text.append(self.food)
+                self.travel = Oracle_Travels[i]
+                self.oracle_attributes.append("Travel: "+str(self.travel))
+                self.attributes_text.append(self.travel)
+                self.age = Oracle_Ages[i]
+                self.oracle_attributes.append("Age: "+str(self.age)+" years old")
+                self.attributes_text.append(self.age)
+                self.orgin = Oracle_Orgins[i]
+                self.oracle_attributes.append("Orgin: "+str(self.orgin))
+                self.attributes_text.append(self.orgin)
+                self.hobby = random.choice(hobbies)
+                self.oracle_attributes.append("Hobby: "+str(self.hobby))
+                self.attributes_text.append(self.hobby) 
+                self.trait = random.choice(traits)
+                self.oracle_attributes.append("Trait: "+str(self.trait))
+                self.attributes_text.append(self.trait)
+                
         
-    def move(self):
-        
-        if self.timer > 0:
-            self.timer -= 1
+    def known_attribute(self):
+        if self.display_known == True:
+            self.display_known = False
+        elif self.display_known == False:
+            self.display_known = True
+            
+                
+    def ask(self):
+        self.hellos = ["Villager: Hello Traveler","Villager: Welcome to the "+str(self.villager_location)]
+        self.hello_text = random.choice(self.hellos)
+        self.question = "You: Do you know the Oracle?"
+        if self.same_traits >= 2:
+            self.response = "Villager: Yeah, I know the Oracle."
+        elif self.same_traits < 2:
+            self.response = "Villager: No, I don't know who that is."
+            
+    def ask_question(self):
+        if self.same_traits >= 2:
+            self.response = "Villager: Can you repeat that?"
+            
+            for i in range(len(ask_food_directly)):
+                if ask_food_directly[i] in self.asked_question:	
+                    if self.attributes[3] == self.oracle_attributes[3]:
+                        self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
+                        self.known_attributes[3] = self.oracle_attributes[3]
+                    else:
+                        self.response = "Villager: I don't know what he eats."
+                    
+            for i in range(len(ask_food_indirectly)):
+                if ask_food_indirectly[i] in self.asked_question:	
+                    if self.attributes[3] == self.oracle_attributes[3]:
+                        self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
+                        self.known_attributes[3] = self.oracle_attributes[3]
+                    else:
+                        self.response = "Villager: I don't know what he eats."
+                    
+            for i in range(len(ask_location_directly)):
+                if ask_location_directly[i] in self.asked_question:
+                    self.response = "Villager: He's at the "+str(self.attributes_text[0]+".")
+                    self.known_attributes[0] = self.oracle_attributes[0]
+            for i in range(len(ask_location_indirectly)):
+                if ask_location_indirectly[i] in self.asked_question:
+                    self.response = "Villager: He's at the "+str(self.attributes_text[0]+".")
+                    self.known_attributes[0] = self.oracle_attributes[0]
+                    
+            for i in range(len(ask_age_directly)):
+                if ask_age_directly[i] in self.asked_question:
+                    self.response = "Villager: He's "+str(self.attributes_text[5])+" years old."
+                    self.known_attributes[5] = self.oracle_attributes[5]
+            for i in range(len(ask_age_indirectly)):
+                if ask_age_indirectly[i] in self.asked_question:
+                    self.response = "Villager: He's "+str(self.attributes_text[5])+" years old."
+                    self.known_attributes[5] = self.oracle_attributes[5]
+                    
+            for i in range(len(ask_job_directly)):
+                if ask_job_directly[i] in self.asked_question:
+                    if self.attributes[2] == self.oracle_attributes[2]:
+                        self.response = "Villager: He is a "+str(self.attributes_text[2]+".")
+                        self.known_attributes[2] = self.oracle_attributes[2]
+                    else:
+                        self.response = "Villager: I don't know where he works."
+                    
+            for i in range(len(ask_job_indirectly)):
+                if ask_job_indirectly[i] in self.asked_question:	
+                    if self.attributes[2] == self.oracle_attributes[2]:
+                        self.response = "Villager: He is a "+str(self.attributes_text[2]+".")
+                        self.known_attributes[2] = self.oracle_attributes[2]
+                    else:
+                        self.response = "Villager: I don't know where he works."
+                   
+            for i in range(len(ask_hobby_directly)):
+                if ask_hobby_directly[i] in self.asked_question:	
+                    if self.attributes[7] == self.oracle_attributes[7]:
+                        self.response = "Villager: He likes to "+str(self.attributes_text[7]+".")
+                        self.known_attributes[7] = self.oracle_attributes[7]
+                    else:
+                        self.response = "Villager: I don't know what he does for fun."
+                    
+            for i in range(len(ask_hobby_indirectly)):
+                if ask_hobby_indirectly[i] in self.asked_question:
+                    if self.attributes[7] == self.oracle_attributes[7]:
+                        self.response = "Villager: He likes to "+str(self.attributes_text[7]+".")
+                        self.known_attributes[7] = self.oracle_attributes[7]
+                    else:
+                        self.response = "Villager: I don't know what he does for fun."
+                   
+            for i in range(len(ask_orgin_directly)):
+                if ask_orgin_directly[i] in self.asked_question:	
+                    if self.attributes[6] == self.oracle_attributes[6]:
+                        self.response = "Villager: He's from the "+str(self.attributes_text[6]+".")
+                        self.known_attributes[6] = self.oracle_attributes[6]
+                    else:
+                        self.response = "Villager: I don't know where he's from."
+                    
+            for i in range(len(ask_orgin_indirectly)):
+                if ask_orgin_indirectly[i] in self.asked_question:	
+                    if self.attributes[6] == self.oracle_attributes[6]:
+                        self.response = "Villager: He's from the "+str(self.attributes_text[6]+".")
+                        self.known_attributes[6] = self.oracle_attributes[6]
+                    else:
+                        self.response = "Villager: I don't know where he's from."
+                   
+            for i in range(len(ask_travel_directly)):
+                if ask_travel_directly[i] in self.asked_question:
+                    if self.attributes[4] == self.oracle_attributes[4]:                    
+                        self.response = "Villager: He travels by "+str(self.attributes_text[4]+".")
+                        self.known_attributes[4] = self.oracle_attributes[4]
+                    else:
+                        self.response = "Villager: I don't know how he gets around."
+                    
+            for i in range(len(ask_travel_indirectly)):
+                if ask_travel_indirectly[i] in self.asked_question:
+                    if self.attributes[4] == self.oracle_attributes[4]:
+                        self.response = "Villager: He travels by "+str(self.attributes_text[4]+".")
+                        self.known_attributes[4] = self.oracle_attributes[4]
+                    else:
+                        self.response = "Villager: I don't know how he gets around."
+                   
+            for i in range(len(ask_trait_directly)):
+                if ask_trait_directly[i] in self.asked_question:
+                    if self.attributes[8] == self.oracle_attributes[8]:
+                        self.response = "Villager: He is "+str(self.attributes_text[8]+".")
+                        self.known_attributes[8] = self.oracle_attributes[8] 
+                    else:
+                        self.response = "Villager: I don't know what he's like."
+                    
+            for i in range(len(ask_trait_indirectly)):
+                if ask_trait_indirectly[i] in self.asked_question:	
+                    if self.attributes[8] == self.oracle_attributes[8]:
+                        self.response = "Villager: He is "+str(self.attributes_text[8]+".")
+                        self.known_attributes[8] = self.oracle_attributes[8]
+                    else:
+                        self.response = "Villager: I don't know what he's like"
+                   
         else:
-            self.timer = 90
-            self.dir_x = random.randint(-10, 10)
-            self.dir_y = random.randint(-10, 10)
-        
-        self.x += self.dir_x*self.speed/20
-        self.y += self.dir_y*self.speed/20
-        
-        if self.x > 400:
-            self.x = 0
-        if self.x < 0:
-            self.x = 400
-            
-        if self.y > 300:
-            self.y = 0
-        if self.y < 0:
-            self.y = 300
-            
-        self.pos = [self.x, self.y]
-                  
-    def draw(self, canvas):           
-        canvas.draw_image(self.image, (self.image.get_width()/2, self.image.get_height()/2), (self.image.get_width(),self.image.get_height()), (self.x,self.y), self.size)
-           
-        canvas.draw_text(str(self.health),[350, 50], 12, 'blue')
-    
-    def opponent_move(self, canvas, ninja):
-        self.image = random.choice([samura_strike_right, samura_strike_left])
-        
-        self.draw(canvas)
-        
-        if BLOCK and self.image == samura_strike_right or self.image == samura_strike_left:
-            self.health -= 5
-        if (self.image == samura_strike_right and RIGHTSTRIKE) or (self.image == samura_strike_left and LEFTSTRIKE):
-            self.health -= 10
-            ninja.health -= 10
-        if POWERMOVE:
-            ninja.health -= 15
-            
-    def is_hit(self):
-        if ninja.star_fly == True:
-            if ninja.star_used == False:
-                if self.hit == False and dist(ninja.star_pos,self.pos) <= ((self.size[0]/2) + 2.5):
-                    self.health -= 25
-                    ninja.star_fly = False
-                    ninja.star_used = True
-                    self.star_hits += 1
-                print(dist(ninja.star_pos,self.pos))
-        if self.health <= 0:
-            ninja.star_count += self.star_hits
-            self.star_hits = 0
-        
-ninja = Ninja()
-samura = Opponent(3, 4, 25, opponent_clone_1, (50, 50))
-pekka = Opponent(10, 2, 100, pekka_texture, (80, 80))
-        
-def start():
-    global welcome
-    welcome = False
-    samura.fight = True
+            self.response = "Villager: I don't know him."
 
-def dist(point1, point2):
-    distance = ((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)**.5
-    return distance
- 
-# Handler to draw on canvas
+Guy1 = Profile()
+Guy1.oracle_attribute()
+Guy1.new_attributes()
+Welcome = welcome()
+
+def profile_draw(canvas):
+    canvas.draw_polygon([(5,395),(350,395),(350,205),(5,205)],10,"Orange","White")
+    text_box = "Dialogue Box"
+    text_y = 224
+    canvas.draw_text(text_box,[12,text_y],18,"Black")
+    canvas.draw_image(Welcome.image,(Welcome.image.get_width()/2,Welcome.image.get_height()/2),(Welcome.image.get_width(),Welcome.image.get_height()),(475,200),(240,400))
+    canvas.draw_image(Welcome.villager_type,(Welcome.villager_type.get_width()/2,Welcome.villager_type.get_height()/2),(Welcome.villager_type.get_width(),Welcome.villager_type.get_height()),(475,200),(240,400))
+
+    
+    if Guy1.display_known == False:
+        canvas.draw_polygon([(5,195),(350,195),(350,5),(5,5)],10,"Cyan","White")
+        text_y = 24
+        villager_text = "Villager Attributes"
+        canvas.draw_text(villager_text,[12,text_y],18,"Black")
+        text_y += 18
+        for i in range(len(Guy1.attributes)):
+            canvas.draw_text(Guy1.attributes[i],[12,text_y],18,"Black")
+            text_y += 18
+    if Guy1.display_known == True:
+        canvas.draw_polygon([(5,195),(350,195),(350,5),(5,5)],10,"Red","White")
+        text_y = 24
+        known_text = "Known Oracle Attributes"
+        canvas.draw_text(known_text,[12,text_y],18,"Black")
+        text_y += 18
+        for i in range(len(Guy1.known_attributes)):
+            canvas.draw_text(Guy1.known_attributes[i],[12,text_y],18,"Black")
+            text_y += 18
+
+def typing(key):
+    if key == simplegui.KEY_MAP['1']:
+        Guy1.question_typing += '1'
+    elif key == simplegui.KEY_MAP['2']:
+        Guy1.question_typing += '2'
+    elif key == simplegui.KEY_MAP['3']:
+        Guy1.question_typing += '3'
+    elif key == simplegui.KEY_MAP['4']:
+        Guy1.question_typing += '4'
+    elif key == simplegui.KEY_MAP['5']:
+        Guy1.question_typing += '5'
+    elif key == simplegui.KEY_MAP['6']:
+        Guy1.question_typing += '6'
+    elif key == simplegui.KEY_MAP['7']:
+        Guy1.question_typing += '7'
+    elif key == simplegui.KEY_MAP['8']:
+        Guy1.question_typing += '8'
+    elif key == simplegui.KEY_MAP['9']:
+        Guy1.question_typing += '9'
+    elif key == simplegui.KEY_MAP['a']:
+        Guy1.question_typing += 'a'
+    elif key == simplegui.KEY_MAP['b']:
+        Guy1.question_typing += 'b'
+    elif key == simplegui.KEY_MAP['c']:
+        Guy1.question_typing += 'c'
+    elif key == simplegui.KEY_MAP['d']:
+        Guy1.question_typing += 'd'
+    elif key == simplegui.KEY_MAP['e']:
+        Guy1.question_typing += 'e'
+    elif key == simplegui.KEY_MAP['f']:
+        Guy1.question_typing += 'f'
+    elif key == simplegui.KEY_MAP['g']:
+        Guy1.question_typing += 'g'
+    elif key == simplegui.KEY_MAP['h']:
+        Guy1.question_typing += 'h'
+    elif key == simplegui.KEY_MAP['i']:
+        Guy1.question_typing += 'i'
+    elif key == simplegui.KEY_MAP['j']:
+        Guy1.question_typing += 'j'
+    elif key == simplegui.KEY_MAP['k']:
+        Guy1.question_typing += 'k'
+    elif key == simplegui.KEY_MAP['l']:
+        Guy1.question_typing += 'l'
+    elif key == simplegui.KEY_MAP['m']:
+        Guy1.question_typing += 'm'
+    elif key == simplegui.KEY_MAP['n']:
+        Guy1.question_typing += 'n'
+    elif key == simplegui.KEY_MAP['o']:
+        Guy1.question_typing += 'o'
+    elif key == simplegui.KEY_MAP['p']:
+        Guy1.question_typing += 'p'
+    elif key == simplegui.KEY_MAP['q']:
+        Guy1.question_typing += 'q'
+    elif key == simplegui.KEY_MAP['r']:
+        Guy1.question_typing += 'r'
+    elif key == simplegui.KEY_MAP['s']:
+        Guy1.question_typing += 's'
+    elif key == simplegui.KEY_MAP['t']:
+        Guy1.question_typing += 't'
+    elif key == simplegui.KEY_MAP['u']:
+        Guy1.question_typing += 'u'
+    elif key == simplegui.KEY_MAP['v']:
+        Guy1.question_typing += 'v'
+    elif key == simplegui.KEY_MAP['w']:
+        Guy1.question_typing += 'w'
+    elif key == simplegui.KEY_MAP['x']:
+        Guy1.question_typing += 'x'
+    elif key == simplegui.KEY_MAP['y']:
+        Guy1.question_typing += 'y'
+    elif key == simplegui.KEY_MAP['z']:
+        Guy1.question_typing += 'z'
+    elif key == simplegui.KEY_MAP['space']:
+        Guy1.question_typing += ' '
+    elif key == simplegui.KEY_MAP['0']:
+        Guy1.asked_question = Guy1.question_typing
+        Guy1.question = "You: "+str(Guy1.question_typing)+"?"
+        Guy1.question_typing = ""
+        Guy1.ask_question()
+            
+def text_draw(canvas):
+    hint = "Hint: Press ZERO to ask a question"
+    typing_area = "Typing will appear here:"
+    canvas.draw_text(hint,[12,224+18],18,"Black")
+    canvas.draw_text(Guy1.hello_text,[12,224+18*2],18,"Black")
+    canvas.draw_text(Guy1.question,[12,(224+18*3)],18,"Black")
+    canvas.draw_text(typing_area,[12,(224+18*8)],18,"Black")
+    canvas.draw_text(Guy1.question_typing,[12,(224+18*9)],18,"Black")
+    canvas.draw_text(Guy1.response,[12,(224+18*4)],18,"Black")
+    
+print(Guy1.oracle_attributes)
+    
 def draw(canvas):
-    global melee, intro, intro_timer, action_image, action_timer
+    profile_draw(canvas)
+    text_draw(canvas)
+    Welcome.welcome_draw(canvas)
     
-    canvas.draw_text(str(ninja.health),[50, 50], 12, 'blue')
-    canvas.draw_text(str(ninja.star_count),[200, 50], 12, 'red')
-        
-    
-    if welcome == True:
-        canvas.draw_image(welcome_background, (640, 360), (1280, 720), (200, 150), (400, 300))
-        canvas.draw_text(message, [50,112], 24, "Red")
-        
-    elif intro == True:
-        canvas.draw_image(welcome_background, (640, 360), (1280, 720), (200, 150), (400, 300))
-        canvas.draw_text(message1, [10,112], 24, "Blue")
-        canvas.draw_text(message2, [80,135], 24, "Blue")
-        canvas.draw_text(message3, [80,155], 24, "Blue")
-        canvas.draw_text(message4, [80,175], 24, "Blue")
-        canvas.draw_text(message5, [80,205], 24, "Blue")
-        intro_timer -= 1               
-        if intro_timer == 0:
-            intro = False
-        
-        
-    elif melee == False and samura.fight == True: 
-        ninja.draw(canvas)
-        ninja.move()
-        samura.enemy = "samura"
-        ninja.throw_star(canvas)
-        
-        samura.draw(canvas)
-        samura.move()
-        samura.is_hit()
-        
-        if samura.health <= 0:
-            samura.fight = False
-            pekka.fight = True
-            samura.health = 25
-            pekka.health = 100
-        
-        if dist(ninja.pos, samura.pos) <= ((samura.size[0]/2)+2.5):
-            melee = True
-            
-    elif melee == True and samura.fight == True:
-        global quip_timer
-        if quip_timer > 0:
-            quip_timer -= 1
-            canvas.draw_text(yeet, [250, 100], 24, 'orange')
-            
-        if samura.health <= 0:
-            melee = False
-            samura.fight = False
-            pekka.fight = True
-            pekka.health = 100
-            samura.health = 25
-            
-        #ninja.draw(canvas)
-        #ninja.move()
-        samura.size = (300, 300)
-        samura.x = 200
-        samura.y = 150
-        if action_timer == 0:
-            samura.image = samura_stand
-        samura.draw(canvas)
-        #samura.move()
-        
-    
-    elif melee == False and pekka.fight == True:
-        pekka.draw(canvas)
-        pekka.move()
-        pekka.is_hit()
-        ninja.draw(canvas)
-        ninja.move()
-        ninja.throw_star(canvas)
-        pekka.enemy = "pekka"
-        
-        if pekka.health <= 0:
-            pekka.fight = False
-            samura.fight = True
-            samura.health = 25
-            pekka.health = 100
-            ninja.star_count += 2
-            
-        #if dist(ninja.pos, pekka.pos) <= (pekka.size[0]):
-        #    melee = True
-            
-    elif melee == True and pekka.fight == True:
-        pekka.size = (500, 500)
-        pekka.x = 200
-        pekka.y = 150
-        pekka.draw(canvas)
-        
-        if pekka.health <= 0:
-            melee = False
-            pekka.fight = False
-            samura.fight = True
-            samura.health = 25
-            pekka.health = 100
-    
-    #Action Animation for Melee
-    if action_timer > 0:
-        action_timer -= 1
-    else:
-        action_image = None
-    ninja.playerinput(canvas) 
-    if action_image != None and melee:
-        canvas.draw_image(action_image, (action_image.get_width()/2,action_image.get_height()/2), (action_image.get_width(), action_image.get_height()),(200,150),(400,300))
-    
-    
-def keyup_handler(key):
-    
-    global UP, DOWN, LEFT, RIGHT, BLOCK, LEFTSTRIKE, RIGHTSTRIKE, POWERMOVE
-    
-    if key == simplegui.KEY_MAP["a"]:
-        LEFT = False
-    
-    if key == simplegui.KEY_MAP["d"]:
-        RIGHT = False
-    
-    if key == simplegui.KEY_MAP["w"]:
-        UP = False
-    
-    if key == simplegui.KEY_MAP["s"]:
-        DOWN = False
-        
-    if key == simplegui.KEY_MAP["space"]:
-        ninja.star_throw = False
-    
-    if key == simplegui.KEY_MAP["f"]:
-        BLOCK = False
-        
-    if key == simplegui.KEY_MAP["q"]:
-        LEFTSTRIKE = False
-        
-    if key == simplegui.KEY_MAP["e"]:
-        RIGHTSTRIKE = False
-    
-    if key == simplegui.KEY_MAP["r"]:
-        POWERMOVE = False
-    
-def keydown_handler(key):
-    
-    global UP, DOWN, LEFT, RIGHT, star_throw, star_count, BLOCK, LEFTSTRIKE, RIGHTSTRIKE, POWERMOVE
-    
-    if key == simplegui.KEY_MAP["a"]:
-        LEFT = True
-    
-    if key == simplegui.KEY_MAP["d"]:
-        RIGHT = True
-    
-    if key == simplegui.KEY_MAP["w"]:
-        UP = True
-    
-    if key == simplegui.KEY_MAP["s"]:
-        DOWN = True
-        
-    if key == simplegui.KEY_MAP["space"] and star_count > 0:
-        ninja.star_throw = True
-        ninja.star_dir_x = ninja.dir_x
-        samura.hit = False
-        pekka.hit = False
-        
-    if key == simplegui.KEY_MAP["f"]:
-        BLOCK = True
-        
-    if key == simplegui.KEY_MAP["q"]:
-        LEFTSTRIKE = True
-        
-    if key == simplegui.KEY_MAP["e"]:
-        RIGHTSTRIKE = True
-    
-    if key == simplegui.KEY_MAP["r"]:
-        POWERMOVE = True
-        
-        
-# Create a frame and assign callbacks to event handlers
-frame = simplegui.create_frame("ROTN", 400, 300)
-frame.add_button("Start", start)
+frame = simplegui.create_frame("Oracle",600,400)
 frame.set_draw_handler(draw)
-frame.set_keyup_handler(keyup_handler)
-frame.set_keydown_handler(keydown_handler)
- 
-# Start the frame animation
-frame.start()
+frame.set_keydown_handler(typing)
+frame.add_button("Guess the oracle",Guy1.is_win)
+frame.add_button("Change Location",Welcome.change_location)
+frame.add_button("Meet New Villager",Guy1.new_attributes)
+frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
+if Guy1.win == False:
+    frame.start()
