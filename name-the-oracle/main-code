@@ -8,7 +8,7 @@ class welcome:
         self.welcome_timer = 840
         self.speed = 5
         self.image = forest_background
-        self.villager_type = forest_character_stand_walk
+        self.villager_type = forest_character_bust
         self.messages = ["","","","","","","",""]
         
     def change_location(self):
@@ -37,7 +37,7 @@ class welcome:
         self.welcome_timer = 840
         self.speed = 5
         self.image = forest_background
-        self.villager_type = forest_character_stand_walk
+        self.villager_type = forest_character_bust
 
         message1 = "Welcome to the forest"
         message2 = "you are stranded here"
@@ -66,7 +66,7 @@ class welcome:
         self.welcome_timer = 840
         self.speed = 5
         self.image = forest_background
-        self.villager_type = forest_character_stand_walk
+        self.villager_type = forest_character_bust
 
         message1 = "Try to climb down the mountain "
         message2 = "Find the Mineshaft "
@@ -154,6 +154,7 @@ ask_trait_indirectly = ["Helpful","Nice","Sarcastic","Generous","Demanding","Gre
 
 #Images
 
+forest_character_bust = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423654421954610/Untitled17_20210302134644.png?width=422&height=422")
 forest_character_stand_walk = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423708729540628/Untitled18_20210302163516.png?width=316&height=422")
 forest_character_walk = simplegui.load_image("https://lh3.googleusercontent.com/fife/ABSRlIoTE93zrb7BSLNpD3etcS4BMVsSibXE55wHdOU3Wnaz1TFw_E1BXOdlfagsLsVnT70_SE1cJD5hEca6g_YK_LvbFq-JGyHUgklHirgSP8rmgA8KtswITeLjazvmbhkttjR7xAw6Hkp8X4NcjMOzLbCX5zsG9hO0T4_SQResaQ-XbO5dStWVTbG5uGcae-Xd-jH8hy4uBgqOMFuvfFepmgiB1NJXVeHA0y5IlXA7W71pvfFGw4gf8TOaPwCM8rHfjAGJm6PTOk79Cge20W7dw3JrJfIAAl_lyH3Fqj4Y4jK-z-ytkKg42oxFkRyTGDUXoZ6IguXkv9psBRvanNsGMUP7BpvX7ijrWYWkkmyjrvUe0peKN0zCwgsSZyvfcafDPCJwCdWl3ySM7GeAxDzbWsdGgYv8IG9dGmvYdGP5O32PKEMcJTigvYXbcxRyLWEtwVadmqzJHdBgCi5cn3TwOxrks5nT0_wu5PWMXpTmquvf1VG7ZQgrpK0mxWxmNxH-Y4IBO2bNiRbNGan6HsJc59G9UWNHkqREs6Mkm_6n_35c3GgENaqbr_3HarGh8tThXLMsF-n_B22ZQnGZkj9guC0DtrdU0D1Fh_IrkFO_vlPDierthVva5bO-bREx0vOYpR7jiKA9EbfB6fxm4K7MCg_ljIO8dv9Yf26C94eyH40eOfqqIltCw1_mgEyAGd4D5zhIf93yDXmop_U3a8oExkAm-l0SqI4=w1366-h665-ft?authuser=0")
 forest_background = simplegui.load_image("https://static.photocrowd.com/upl/3m/cms.Wl4JJNTjmGx8TN459Mbw-hd.jpeg")
