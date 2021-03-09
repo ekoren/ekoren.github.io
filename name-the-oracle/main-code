@@ -17,18 +17,18 @@ def forest_welcome(canvas):
     messages = [message1, message2, message3, message4, message5, message6, message7]
 
     # Handler to draw on canvas
-    def welcome_draw(canvas):
-        global welcome_timer, welcome
-        imageWidth = forest_background.get_width()
-        imageHeight = forest_background.get_height()
-        canvas.draw_image(forest_background, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [200, 150], [400, 300])
+def welcome_draw(canvas):
+	global welcome_timer, welcome
+    imageWidth = forest_background.get_width()
+    imageHeight = forest_background.get_height()
+    canvas.draw_image(forest_background, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [200, 150], [400, 300])
 
-        if welcome == True:
-            welcome_timer -= 1
-            i = int(welcome_timer/120)%len(messages)
-            canvas.draw_text(messages[6-i], [50,112], 26, "Red")
-            if welcome_timer == 0:
-                welcome = False
+    if welcome == True:
+    	welcome_timer -= 1
+       	i = int(welcome_timer/120)%len(messages)
+        canvas.draw_text(messages[6-i], [50,112], 26, "Red")
+        if welcome_timer == 0:
+	        welcome = False
     
 
 
@@ -54,29 +54,31 @@ def mountain_welcome(canvas):
         canvas.draw_text(messages[6-i], [28, 90], 26, "Purple")
         if welcome_timer == 0:
             welcome = False
-
 #Magpie
 
-ask_food_directly= ['food', 'foods', 'eat', 'eats', 'hungry', 'meal', 'meals', 'consume', 'taste', 'tasty']
-ask_food_indirectly= ['goat meat', 'fish', 'cheese', 'papaya', 'papayas', 'potato', 'potatoes']
+ask_food_directly = ['food', 'foods', 'eat', 'eats', 'hungry', 'meal', 'meals', 'consume', 'taste', 'tasty']
+ask_food_indirectly = ['goat meat', 'fish', 'cheese', 'papaya', 'papayas', 'potato', 'potatoes']
 
-ask_location_directly= ['live', 'location', 'region', 'reside', 'house', 'home', 'where']  
-ask_location_indirectly= ['plain', 'plains', 'valley', 'forest', 'forests', 'woods', 'mountain', 'mountains', 'coast', 'coastline', 'ocean', 'sea']
+ask_location_directly = ['live', 'location', 'region', 'reside', 'house', 'home', 'where']  
+ask_location_indirectly = ['plain', 'plains', 'valley', 'forest', 'forests', 'woods', 'mountain', 'mountains', 'coast', 'coastline', 'ocean', 'sea']
 
 ask_age_directly = ['old', 'age', 'young', 'years', 'long', 'born'] 
 ask_age_indirectly = ['17', '36', '43', '59', '75', '107', 'seventeen', 'thirty-six', 'forty-three',  'fifty-nine', 'seventy-five', 'one hundred seven']  
 
-ask_job_directly= ['work', 'job', 'occupation', 'money', 'a living']
-ask_job_indirectly= ['bard', 'fisherman', 'scribe', 'writer', 'warrior', 'carpenter', 'noble', 'fishing']
+ask_job_directly = ['work', 'job', 'occupation', 'money', 'a living']
+ask_job_indirectly = ['bard', 'fisherman', 'scribe', 'writer', 'warrior', 'carpenter', 'noble', 'fishing']
 
-ask_hobby_directly= ['hobby', 'activity', 'fun', 'pastime']
-ask_hobby_indirectly= ['contemplate', 'watch', 'hunt', 'games', 'play', 'walk', 'children', 'animals', 'birds', 'shore', 'meaning']
+ask_hobby_directly = ['hobby', 'activity', 'fun', 'pastime']
+ask_hobby_indirectly = ['contemplate', 'watch', 'hunt', 'games', 'play', 'walk', 'children', 'animals', 'birds', 'shore', 'meaning']
 
-ask_orgin_directly=  [ 'origin', 'tribe']
-ask_orgin_indirectly= ['earth', 'water', 'fire', 'air']
+ask_orgin_directly =  [ 'origin', 'tribe']
+ask_orgin_indirectly = ['earth', 'water', 'fire', 'air']
 
-ask_travel_directly= ['travel', 'move', 'navigate', 'vehicle', 'ride', 'transportation', 'transport']
-ask_travel_indirectly=['camel', 'donkey', 'boat', 'horseback', 'walking', 'walk', 'horse']
+ask_travel_directly = ['travel', 'move', 'navigate', 'vehicle', 'ride', 'transportation', 'transport','get around']
+ask_travel_indirectly =['camel', 'donkey', 'boat', 'horseback', 'walking', 'walk', 'horse']
+
+ask_trait_directly = ['trait','manner','habit','character','attributes']
+ask_trait_indirectly = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungrateful"]
 
 
 #Images
@@ -114,6 +116,7 @@ class Profile:
         self.villager_location = random.choice(locations)
         self.oracle_location = random.choice(locations)
         self.win = False
+        self.is_asked = False
         self.asked_question = ""
         self.question_typing = ""
         self.occupation = ""
@@ -233,30 +236,40 @@ class Profile:
         self.hellos = ["Villager: Hello Traveler","Villager: Welcome to the "+str(self.villager_location)]
         self.hello_text = random.choice(self.hellos)
         self.question = "You: Do you know the Oracle?"
-        if self.same_traits >= 3:
+        if self.same_traits >= 2:
             self.response = "Villager: Yeah, I know the Oracle."
-        elif self.same_traits < 3:
+        elif self.same_traits < 2:
             self.response = "Villager: No, I don't know who that is."
             
     def ask_question(self):
-        if self.same_traits >= 3:
+        if self.same_traits >= 2:
+            self.response = "Villager: Can you repeat that?"
+            
             for i in range(len(ask_food_directly)):
-                if self.attributes[3] == self.oracle_attributes[3]:
-                    if ask_food_directly[i] in self.asked_question:
+                if ask_food_directly[i] in self.asked_question:	
+                    if self.attributes[3] == self.oracle_attributes[3]:
                         self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
                         self.known_attributes[3] = self.oracle_attributes[3]
-                for i in range(len(ask_food_indirectly)):
-                    if ask_food_indirectly[i] in self.asked_question:
+                    else:
+                        self.response = "Villager: I don't know what he eats."
+                    
+            for i in range(len(ask_food_indirectly)):
+                if ask_food_indirectly[i] in self.asked_question:	
+                    if self.attributes[3] == self.oracle_attributes[3]:
                         self.response = "Villager: He eats "+str(self.attributes_text[3]+".")
                         self.known_attributes[3] = self.oracle_attributes[3]
+                    else:
+                        self.response = "Villager: I don't know what he eats."
+                    
             for i in range(len(ask_location_directly)):
                 if ask_location_directly[i] in self.asked_question:
-                    self.response = "Villager: He's at "+str(self.attributes_text[0]+".")
+                    self.response = "Villager: He's at the "+str(self.attributes_text[0]+".")
                     self.known_attributes[0] = self.oracle_attributes[0]
             for i in range(len(ask_location_indirectly)):
                 if ask_location_indirectly[i] in self.asked_question:
-                    self.response = "Villager: He's at "+str(self.attributes_text[0]+".")
+                    self.response = "Villager: He's at the "+str(self.attributes_text[0]+".")
                     self.known_attributes[0] = self.oracle_attributes[0]
+                    
             for i in range(len(ask_age_directly)):
                 if ask_age_directly[i] in self.asked_question:
                     self.response = "Villager: He's "+str(self.attributes_text[5])+" years old."
@@ -265,42 +278,87 @@ class Profile:
                 if ask_age_indirectly[i] in self.asked_question:
                     self.response = "Villager: He's "+str(self.attributes_text[5])+" years old."
                     self.known_attributes[5] = self.oracle_attributes[5]
-            if self.attributes[2] == self.oracle_attributes[2]:
-                for i in range(len(ask_job_directly)):
-                    if ask_job_directly[i] in self.asked_question:
-                        self.response = "Villager: He's a "+str(self.attributes_text[2])+"."
+                    
+            for i in range(len(ask_job_directly)):
+                if ask_job_directly[i] in self.asked_question:
+                    if self.attributes[2] == self.oracle_attributes[2]:
+                        self.response = "Villager: He is a "+str(self.attributes_text[2]+".")
                         self.known_attributes[2] = self.oracle_attributes[2]
-                for i in range(len(ask_job_indirectly)):
-                    if ask_job_indirectly[i] in self.asked_question:
-                        self.response = "Villager: He's a "+str(self.attributes_text[2])+"."
+                    else:
+                        self.response = "Villager: I don't know where he works."
+                    
+            for i in range(len(ask_job_indirectly)):
+                if ask_job_indirectly[i] in self.asked_question:	
+                    if self.attributes[2] == self.oracle_attributes[2]:
+                        self.response = "Villager: He is a "+str(self.attributes_text[2]+".")
                         self.known_attributes[2] = self.oracle_attributes[2]
-            if self.attributes[7] == self.oracle_attributes[7]:
-                for i in range(len(ask_hobby_directly)):
-                    if ask_hobby_directly[i] in self.asked_question:
-                        self.response = "Villager: He likes to "+str(self.attributes_text[7])+"."
+                    else:
+                        self.response = "Villager: I don't know where he works."
+                   
+            for i in range(len(ask_hobby_directly)):
+                if ask_hobby_directly[i] in self.asked_question:	
+                    if self.attributes[7] == self.oracle_attributes[7]:
+                        self.response = "Villager: He likes to "+str(self.attributes_text[7]+".")
                         self.known_attributes[7] = self.oracle_attributes[7]
-                for i in range(len(ask_hobby_indirectly)):
-                    if ask_hobby_indirectly[i] in self.asked_question:
-                        self.response = "Villager: He likes to "+str(self.attributes_text[7])+"."
+                    else:
+                        self.response = "Villager: I don't know what he does for fun."
+                    
+            for i in range(len(ask_hobby_indirectly)):
+                if ask_hobby_indirectly[i] in self.asked_question:
+                    if self.attributes[7] == self.oracle_attributes[7]:
+                        self.response = "Villager: He likes to "+str(self.attributes_text[7]+".")
                         self.known_attributes[7] = self.oracle_attributes[7]
-            if self.attributes[6] == self.oracle_attributes[6]:
-                for i in range(len(ask_orgin_directly)):
-                    if ask_orgin_directly[i] in self.asked_question:
-                        self.response = "Villager: He's from "+str(self.attributes_text[6])+"."
+                    else:
+                        self.response = "Villager: I don't know what he does for fun."
+                   
+            for i in range(len(ask_orgin_directly)):
+                if ask_orgin_directly[i] in self.asked_question:	
+                    if self.attributes[6] == self.oracle_attributes[6]:
+                        self.response = "Villager: He's from the "+str(self.attributes_text[6]+".")
                         self.known_attributes[6] = self.oracle_attributes[6]
-                for i in range(len(ask_orgin_indirectly)):
-                    if ask_orgin_indirectly[i] in self.asked_question:
-                        self.response = "Villager: He's from "+str(self.attributes_text[6])+"."
+                    else:
+                        self.response = "Villager: I don't know where he's from."
+                    
+            for i in range(len(ask_orgin_indirectly)):
+                if ask_orgin_indirectly[i] in self.asked_question:	
+                    if self.attributes[6] == self.oracle_attributes[6]:
+                        self.response = "Villager: He's from the "+str(self.attributes_text[6]+".")
                         self.known_attributes[6] = self.oracle_attributes[6]
-            if self.attributes[4] == self.oracle_attributes[4]:
-                for i in range(len(ask_travel_directly)):
-                    if ask_travel_directly[i] in self.question:
-                        self.response = "Villager: He gets around by "+str(self.attributes_text[4])+"."
+                    else:
+                        self.response = "Villager: I don't know where he's from."
+                   
+            for i in range(len(ask_travel_directly)):
+                if ask_travel_directly[i] in self.asked_question:
+                    if self.attributes[4] == self.oracle_attributes[4]:                    
+                        self.response = "Villager: He travels by "+str(self.attributes_text[4]+".")
                         self.known_attributes[4] = self.oracle_attributes[4]
-                for i in range(len(ask_travel_indirectly)):
-                    if ask_travel_indirectly[i] in self.asked_question:
-                        self.response = "Villager: He gets around by "+str(self.attributes_text[4])+"."
+                    else:
+                        self.response = "Villager: I don't know how he gets around."
+                    
+            for i in range(len(ask_travel_indirectly)):
+                if ask_travel_indirectly[i] in self.asked_question:
+                    if self.attributes[4] == self.oracle_attributes[4]:
+                        self.response = "Villager: He travels by "+str(self.attributes_text[4]+".")
                         self.known_attributes[4] = self.oracle_attributes[4]
+                    else:
+                        self.response = "Villager: I don't know how he gets around."
+                   
+            for i in range(len(ask_trait_directly)):
+                if ask_trait_directly[i] in self.asked_question:
+                    if self.attributes[8] == self.oracle_attributes[8]:
+                        self.response = "Villager: He is "+str(self.attributes_text[8]+".")
+                        self.known_attributes[8] = self.oracle_attributes[8] 
+                    else:
+                        self.response = "Villager: I don't know what he's like."
+                    
+            for i in range(len(ask_trait_indirectly)):
+                if ask_trait_indirectly[i] in self.asked_question:	
+                    if self.attributes[8] == self.oracle_attributes[8]:
+                        self.response = "Villager: He is "+str(self.attributes_text[8]+".")
+                        self.known_attributes[8] = self.oracle_attributes[8]
+                    else:
+                        self.response = "Villager: I don't know what he's like"
+                   
         else:
             self.response = "Villager: I don't know him."
     
