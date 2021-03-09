@@ -1,6 +1,42 @@
 import simplegui
 import random
 
+def draw_text(canvas, text, x, y, desired_width, font_size, color) :
+    split = [] #Initializes empty list
+    cx = (desired_width * font_size) / 4 #Calculates the offset to the center
+   
+    line = "" #Initializes an empty string
+    for i in range(len(text)) : #Loops over every character in the text
+        if (text[i] == "\n") or ((text[i] == " ") and (len(line) >= desired_width)) : #Check if it should go to the next line
+            split.append(line) #Add everything in the line to the list of lines
+            line = "" #Reset the line
+        else :
+            line += text[i] #Add to the line any normal characters
+       
+    split.append(line) #Add the last line to the list
+   
+    for i in range(len(split)) : #Loop over each line
+        canvas.draw_text(split[i], [x - cx, y + i * font_size], font_size, color) #Draw each line of text under, going down a step each time
+   
+# Handler to draw on canvas
+def coast_intro(canvas):
+    global welcome_timer, welcome
+   
+   
+   
+    if coast_welcome == True:
+        w = coast_background.get_width()
+        h = coast_background.get_height()
+        canvas.draw_image(coast_background, (w/2, h/2), (w,h), (200, 150), (400, 300))
+        coast_welcome_timer -= 1
+        i = int(coast_welcome_timer/150)%len(messages)
+        draw_text(canvas, messages [len(messages)-i-1], 200, 20, 40, 15, "black")
+        if coast_welcome_timer == 0:
+            coast_welcome = False
+       
+
+
+
 class welcome:
     
     def __init__(self):
@@ -169,6 +205,7 @@ valley_move_right = simplegui.load_image("https://ekoren.github.io/name-the-orac
 coast_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
 coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__4_-removebg-preview.png")
 coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
+coast_background = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_KBWG8BIym4QzbF1Kp_86P_q9IB4AlzFgT3t0FjvWKDttVwg:https://loveincorporated.blob.core.windows.net/contentimages/gallery/cf46b0d4-36a1-4e56-9282-c15d5b79315b-ghost-towns-where-no-one-lives-sanatorio-de-abona.jpg&usqp=CAU")
 
 #Attributes Lists
 
