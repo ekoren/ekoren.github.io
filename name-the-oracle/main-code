@@ -58,15 +58,28 @@ class welcome:
                 Guy1.new_attributes()
                 if Guy1.villager_location == locations[0]:
                     self.coast_welcome()
+                    coast_villager = Villager('coast')
+                    coast_villager.move()
+                    coast_villager.draw(canvas)
                 elif Guy1.villager_location == locations[1]:
                     self.forest_welcome()
+                    forest_villager = Villager('forest')
+                    forest_villager.move()
+                    forest_villager.draw(canvas)
                 elif Guy1.villager_location == locations[2]:
                     self.mountain_welcome()
+                    
                 elif Guy1.villager_location == locations[3]:
                     self.valley_welcome()
+                    valley_villager = Villager('valley')
+                    valley_villager.move()
+                    valley_villager.draw(canvas)
                 elif Guy1.villager_location == locations[4]:
                     self.plains_welcome()
-                break
+                    plains_villager = Villager('plains')
+                    plains_villager.move()
+                    plains_villager.draw(canvas)
+                #break
 
     def forest_welcome(self):
         self.welcome = True
@@ -207,6 +220,11 @@ coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle
 coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
 coast_background = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_KBWG8BIym4QzbF1Kp_86P_q9IB4AlzFgT3t0FjvWKDttVwg:https://loveincorporated.blob.core.windows.net/contentimages/gallery/cf46b0d4-36a1-4e56-9282-c15d5b79315b-ghost-towns-where-no-one-lives-sanatorio-de-abona.jpg&usqp=CAU")
 
+
+forest_images = [forest_character_stand_walk, forest_character_walk,forest_character_bust]
+plains_images = [plains_move_left, plains_move_right, plains_bust]
+valley_images = [valley_move_left, valley_move_right, valley_bust]
+coast_images = [coast_move_left, coast_move_right, coast_bust]
 #Attributes Lists
 
 locations = ["Coast","Forest","Mountains","Valley","Plains"]
@@ -460,6 +478,51 @@ class Profile:
         else:
             self.response = "Villager: I don't know him."
 
+class Villager:
+    
+    def __init__(self, region):
+        self.region = region
+        regions = ['forest', 'valley', 'coast', 'plains']
+        region_images = [forest_images, valley_images, coast_images, plains_images]
+        for i in range(len(regions)):
+            if self.region == regions[i]:
+                self.images = region_images[i]
+                       
+        self.x = random.randint(5, 395)
+        self.y = random.randint(5, 295)
+        self.dir_x = 0
+        self.dir_y = 0
+        self.dir_timer = 0
+        self.speed = .2
+        self.draw_timer = 0
+        self.image_list_index = 0
+                       
+    def move(self):
+        self.dir_timer += 1
+        self.dir_timer = self.dir_timer%15
+        if self.dir_timer == 0:
+            self.dir_x = random.randint(-10, 10)
+            self.dir_y = random.randint(-10, 10)
+                       
+        self.x += self.speed*self.dir_x
+        self.y += self.speed*self.dir_y
+            
+    def draw(self, canvas):
+        self.draw_timer += 1
+        self.draw_timer = self.draw_timer%5
+        if self.draw_timer == 0:
+            self.image_list_index += 1
+            self.image_list_index = self.image_list_index%2
+                       
+        self.image = self.images[image_list_index]
+        w = self.image.get_width()
+        h = self.image.get_height()
+                       
+        canvas.draw_image(self.image, (w/2, h/2), (w, h), (self.x, self.y), (10, 10))
+        
+    
+    
+            
 Guy1 = Profile()
 Guy1.oracle_attribute()
 Guy1.new_attributes()
