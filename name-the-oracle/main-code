@@ -28,6 +28,105 @@ plains_images = [plains_move_left, plains_move_right, plains_bust]
 valley_images = [valley_move_left, valley_move_right, valley_bust]
 coast_images = [coast_move_left, coast_move_right, coast_bust]
 
+UP = False
+DOWN = False
+LEFT = False
+RIGHT = False
+Player_x = 25
+Player_y = 250
+Balloon = simplegui.load_image("https://17Captain.github.io/81J1ZB-n6mL._AC_SX679_-removebg-preview.png")
+Overworld = simplegui.load_image("https://17Captain.github.io/map (1).png")
+class box:
+    def __init__(self,x,y,width,height,color,on_collide):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.color = color
+        self.on_collide = on_collide
+    def draw(self,canvas):
+        canvas.draw_polygon([[self.x,self.y],[self.x + self.width, self.y], [self.x + self.width, self.y + self.height],[self.x, self.y + self.height]],10,self.color)
+    def includes(self, x, y):
+        return (x >= self.x) and (y >= self.y) and (x <= self.x + self.width) and (y <= self.y + self.height)
+   
+def move():
+    global UP, DOWN, LEFT, RIGHT, Player_y, Player_x
+    if UP:
+        if Player_y >= 60:
+            Player_y -= 2.5
+    if DOWN:
+        if Player_y <= 240:
+            Player_y += 2.5
+    if LEFT:
+        if Player_x >= 40:
+            Player_x -= 2.5
+    if RIGHT:
+        if Player_x <= 360:
+            Player_x += 2.5
+       
+   
+def keydown(key):
+    global UP, DOWN, LEFT, RIGHT
+    if key == simplegui.KEY_MAP["w"]:
+        UP = True
+    if key == simplegui.KEY_MAP["s"]:
+        DOWN = True
+    if key == simplegui.KEY_MAP["a"]:
+        LEFT = True
+    if key == simplegui.KEY_MAP["d"]:
+        RIGHT = True
+   
+def keyup(key):
+    global UP, DOWN, LEFT, RIGHT
+    if key == simplegui.KEY_MAP["w"]:
+        UP = False
+    if key == simplegui.KEY_MAP["s"]:
+        DOWN = False
+    if key == simplegui.KEY_MAP["a"]:
+        LEFT = False
+    if key == simplegui.KEY_MAP["d"]:
+        RIGHT = False
+   
+
+#Controlls what happens when you go to that area
+
+def on_beach():
+    print("beach")
+def forest():
+    print ("forest")    
+def mountains():
+    print('mountains')
+def grasslands():
+    print('grasslands')
+def valley():
+    print("valley")
+boxes = []
+boxes.append(box(60,10,50,60,"#fffb0000",on_beach))
+boxes.append(box(315,20,60,60,"#fffb0000",valley))
+boxes.append(box(320,200,50,60,"#fffb0000",forest))
+boxes.append(box(160,225,100,60,"#fffb0000",grasslands))
+boxes.append(box(210,10,50,60,"#fffb0000",mountains))
+def draw(canvas):
+    global Scene1
+    canvas.draw_image(Overworld, (Overworld.get_width()/2,Overworld.get_height()/2), (Overworld.get_width(), Overworld.get_height()), (200,150), (400,300))
+    canvas.draw_image(Overworld, (Overworld.get_width()/2,Overworld.get_height()/2), (Overworld.get_width(), Overworld.get_height()), (200,150), (400,300))    
+    canvas.draw_image(Balloon, (Balloon.get_width()/2,Balloon.get_height()/2), (Balloon.get_width(), Balloon.get_height()), (Player_x, Player_y), (30,55))
+   
+   
+    move()
+   
+    for box in boxes:
+        box.draw(canvas)
+        if box.includes(Player_x, Player_y):
+            box.on_collide()
+           
+   
+# Create a frame and assign callbacks to event handlers
+#frame = simplegui.create_frame("Home", 400, 300)
+
+frame.set_draw_handler(draw)
+frame.set_keydown_handler(keydown)
+frame.set_keyup_handler(keyup)
 
 def draw_text(canvas, text, x, y, desired_width, font_size, color) :
     split = [] #Initializes empty list
