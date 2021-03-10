@@ -1,6 +1,34 @@
 import simplegui
 import random
 
+frame = simplegui.create_frame("Oracle",600,400)
+
+#Images
+
+forest_character_bust = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423654421954610/Untitled17_20210302134644.png?width=422&height=422")
+forest_character_stand_walk = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423708729540628/Untitled18_20210302163516.png?width=316&height=422")
+forest_character_walk = simplegui.load_image("https://lh3.googleusercontent.com/fife/ABSRlIoTE93zrb7BSLNpD3etcS4BMVsSibXE55wHdOU3Wnaz1TFw_E1BXOdlfagsLsVnT70_SE1cJD5hEca6g_YK_LvbFq-JGyHUgklHirgSP8rmgA8KtswITeLjazvmbhkttjR7xAw6Hkp8X4NcjMOzLbCX5zsG9hO0T4_SQResaQ-XbO5dStWVTbG5uGcae-Xd-jH8hy4uBgqOMFuvfFepmgiB1NJXVeHA0y5IlXA7W71pvfFGw4gf8TOaPwCM8rHfjAGJm6PTOk79Cge20W7dw3JrJfIAAl_lyH3Fqj4Y4jK-z-ytkKg42oxFkRyTGDUXoZ6IguXkv9psBRvanNsGMUP7BpvX7ijrWYWkkmyjrvUe0peKN0zCwgsSZyvfcafDPCJwCdWl3ySM7GeAxDzbWsdGgYv8IG9dGmvYdGP5O32PKEMcJTigvYXbcxRyLWEtwVadmqzJHdBgCi5cn3TwOxrks5nT0_wu5PWMXpTmquvf1VG7ZQgrpK0mxWxmNxH-Y4IBO2bNiRbNGan6HsJc59G9UWNHkqREs6Mkm_6n_35c3GgENaqbr_3HarGh8tThXLMsF-n_B22ZQnGZkj9guC0DtrdU0D1Fh_IrkFO_vlPDierthVva5bO-bREx0vOYpR7jiKA9EbfB6fxm4K7MCg_ljIO8dv9Yf26C94eyH40eOfqqIltCw1_mgEyAGd4D5zhIf93yDXmop_U3a8oExkAm-l0SqI4=w1366-h665-ft?authuser=0")
+forest_background = simplegui.load_image("https://static.photocrowd.com/upl/3m/cms.Wl4JJNTjmGx8TN459Mbw-hd.jpeg")
+plains_background = simplegui.load_image("https://ekoren.github.io/plains_background.jpeg")
+plains_bust = simplegui.load_image("https://ekoren.github.io/plains_bust.png")
+plains_move_left = simplegui.load_image("https://ekoren.github.io/plains_main_1.png")
+plains_move_right = simplegui.load_image("https://ekoren.github.io/plains_main_2.png")
+valley_background = simplegui.load_image("https://ekoren.github.io/name-the-oracle/cartoon-valley-vector-2519923.jpg")
+valley_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/Valley%20King%20(1).png")
+valley_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/ValleyRunLeft.png")
+valley_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/ValleyRunRight.png")
+coast_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
+coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__4_-removebg-preview.png")
+coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
+coast_background = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_KBWG8BIym4QzbF1Kp_86P_q9IB4AlzFgT3t0FjvWKDttVwg:https://loveincorporated.blob.core.windows.net/contentimages/gallery/cf46b0d4-36a1-4e56-9282-c15d5b79315b-ghost-towns-where-no-one-lives-sanatorio-de-abona.jpg&usqp=CAU")
+
+
+forest_images = [forest_character_stand_walk, forest_character_walk,forest_character_bust]
+plains_images = [plains_move_left, plains_move_right, plains_bust]
+valley_images = [valley_move_left, valley_move_right, valley_bust]
+coast_images = [coast_move_left, coast_move_right, coast_bust]
+
+
 def draw_text(canvas, text, x, y, desired_width, font_size, color) :
     split = [] #Initializes empty list
     cx = (desired_width * font_size) / 4 #Calculates the offset to the center
@@ -35,8 +63,6 @@ def coast_intro(canvas):
             coast_welcome = False
        
 
-
-
 class welcome:
     
     def __init__(self):
@@ -46,6 +72,7 @@ class welcome:
         self.image = forest_background
         self.villager_type = forest_character_bust
         self.messages = ["","","","","","","",""]
+        
         
     def change_location(self):
         for i in range(len(locations)):
@@ -57,29 +84,25 @@ class welcome:
                 Guy1.attributes[0] = "Location: "+str(Guy1.villager_location)
                 Guy1.new_attributes()
                 if Guy1.villager_location == locations[0]:
+                    self.region = "coast"
                     self.coast_welcome()
-                    coast_villager = Villager('coast')
-                    coast_villager.move()
-                    coast_villager.draw(canvas)
+                    
                 elif Guy1.villager_location == locations[1]:
+                    self.region = "forest"
                     self.forest_welcome()
-                    forest_villager = Villager('forest')
-                    forest_villager.move()
-                    forest_villager.draw(canvas)
+                     
                 elif Guy1.villager_location == locations[2]:
+                    self.region = "mountain"
                     self.mountain_welcome()
                     
                 elif Guy1.villager_location == locations[3]:
+                    self.region = "valley"
                     self.valley_welcome()
-                    valley_villager = Villager('valley')
-                    valley_villager.move()
-                    valley_villager.draw(canvas)
+                    
                 elif Guy1.villager_location == locations[4]:
+                    self.region = "plains"
                     self.plains_welcome()
-                    plains_villager = Villager('plains')
-                    plains_villager.move()
-                    plains_villager.draw(canvas)
-                #break
+                    #break
 
     def forest_welcome(self):
         self.welcome = True
@@ -109,7 +132,15 @@ class welcome:
             canvas.draw_text(self.messages[6-i], [200,200], 26, "Red")
             if self.welcome_timer == 0:
                 self.welcome = False
-
+                if self.region == "forest":
+                    frame.set_draw_handler(draw_forest)
+                elif self.region == "plains":
+                    frame.set_draw_handler(draw_plains)
+                elif self.region == "coast":
+                    frame.set_draw_handler(draw_coast)
+                elif self.region == "valley":
+                    frame.set_draw_handler(draw_valley)
+                
     def mountain_welcome(self):
         self.welcome = True
         self.welcome_timer = 840
@@ -125,7 +156,7 @@ class welcome:
         message6 = " You are deserted here "
         message7 = " Collect information from strangers "
         self.messages = [message1, message2, message3, message4, message5, message6, message7]
-
+        
     def plains_welcome(self):
         self.welcome = True
         self.welcome_timer = 840
@@ -170,9 +201,88 @@ class welcome:
         message3 = "They may know about the Oracle"
         message4 = "Sharks loom in the water"
         message5 = "Be careful fishing"
-        message6 = "Lean about the Oracle"
+        message6 = "Learn about the Oracle"
         message7 = "Fish will not help you"
         self.messages = [message1, message2, message3, message4, message5, message6, message7]
+
+class Villager:
+    
+    def __init__(self, region):
+        self.region = region
+        regions = ['forest', 'valley', 'coast', 'plains']
+        region_images = [forest_images, valley_images, coast_images, plains_images]
+        for i in range(len(regions)):
+            if self.region == regions[i]:
+                self.images = region_images[i]
+                       
+        self.x = random.randint(5, 395)
+        self.y = random.randint(5, 295)
+        self.dir_x = 0
+        self.dir_y = 0
+        self.dir_timer = 0
+        self.speed = .2
+        self.draw_timer = 0
+        self.image_list_index = 0
+                       
+    def move(self):
+        self.dir_timer += 1
+        self.dir_timer = self.dir_timer%15
+        if self.dir_timer == 0:
+            self.dir_x = random.randint(-10, 10)
+            self.dir_y = random.randint(-10, 10)
+                       
+        self.x += self.speed*self.dir_x
+        self.y += self.speed*self.dir_y
+            
+    def draw(self, canvas):
+        self.draw_timer += 1
+        self.draw_timer = self.draw_timer%5
+        if self.draw_timer == 0:
+            self.image_list_index += 1
+            self.image_list_index = self.image_list_index%2
+                       
+        self.image = self.images[self.image_list_index]
+        w = self.image.get_width()
+        h = self.image.get_height()
+        print(self.draw_timer)               
+        canvas.draw_image(self.image, (w/2, h/2), (w, h), (self.x, self.y), (10, 10))
+        
+
+valley_villager = Villager('valley')
+coast_villager = Villager('coast')
+forest_villager = Villager('forest')
+plains_villager = Villager('plains')
+        
+        
+def draw_coast(canvas):
+    coast_villager.move()
+    w = coast_background.get_width()
+    h = coast_background.get_height()
+    canvas.draw_image(coast_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
+    coast_villager.draw(canvas)
+    
+def draw_forest(canvas):
+    forest_villager.move()
+    w = forest_background.get_width()
+    h = forest_background.get_height()
+    canvas.draw_image(forest_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
+    forest_villager.draw(canvas)
+
+def draw_plains(canvas):
+    plains_villager.move()
+    w = plains_background.get_width()
+    h = plains_background.get_height()
+    canvas.draw_image(plains_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
+    plains_villager.draw(canvas)
+    
+def draw_valley(canvas):
+    valley_villager.move()
+    w = plains_background.get_width()
+    h = plains_background.get_height()
+    canvas.draw_image(plains_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
+    valley_villager.draw(canvas)
+    
+        
         
 #Magpie
 
@@ -201,30 +311,6 @@ ask_trait_directly = ['trait','manner','habit','character','attributes']
 ask_trait_indirectly = ["Helpful","Nice","Sarcastic","Generous","Demanding","Greedy","Ungrateful"]
 
 
-#Images
-
-forest_character_bust = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423654421954610/Untitled17_20210302134644.png?width=422&height=422")
-forest_character_stand_walk = simplegui.load_image("https://media.discordapp.net/attachments/799029411185033257/816423708729540628/Untitled18_20210302163516.png?width=316&height=422")
-forest_character_walk = simplegui.load_image("https://lh3.googleusercontent.com/fife/ABSRlIoTE93zrb7BSLNpD3etcS4BMVsSibXE55wHdOU3Wnaz1TFw_E1BXOdlfagsLsVnT70_SE1cJD5hEca6g_YK_LvbFq-JGyHUgklHirgSP8rmgA8KtswITeLjazvmbhkttjR7xAw6Hkp8X4NcjMOzLbCX5zsG9hO0T4_SQResaQ-XbO5dStWVTbG5uGcae-Xd-jH8hy4uBgqOMFuvfFepmgiB1NJXVeHA0y5IlXA7W71pvfFGw4gf8TOaPwCM8rHfjAGJm6PTOk79Cge20W7dw3JrJfIAAl_lyH3Fqj4Y4jK-z-ytkKg42oxFkRyTGDUXoZ6IguXkv9psBRvanNsGMUP7BpvX7ijrWYWkkmyjrvUe0peKN0zCwgsSZyvfcafDPCJwCdWl3ySM7GeAxDzbWsdGgYv8IG9dGmvYdGP5O32PKEMcJTigvYXbcxRyLWEtwVadmqzJHdBgCi5cn3TwOxrks5nT0_wu5PWMXpTmquvf1VG7ZQgrpK0mxWxmNxH-Y4IBO2bNiRbNGan6HsJc59G9UWNHkqREs6Mkm_6n_35c3GgENaqbr_3HarGh8tThXLMsF-n_B22ZQnGZkj9guC0DtrdU0D1Fh_IrkFO_vlPDierthVva5bO-bREx0vOYpR7jiKA9EbfB6fxm4K7MCg_ljIO8dv9Yf26C94eyH40eOfqqIltCw1_mgEyAGd4D5zhIf93yDXmop_U3a8oExkAm-l0SqI4=w1366-h665-ft?authuser=0")
-forest_background = simplegui.load_image("https://static.photocrowd.com/upl/3m/cms.Wl4JJNTjmGx8TN459Mbw-hd.jpeg")
-plains_background = simplegui.load_image("https://ekoren.github.io/plains_background.jpeg")
-plains_bust = simplegui.load_image("https://ekoren.github.io/plains_bust.png")
-plains_move_left = simplegui.load_image("https://ekoren.github.io/plains_main_1.png")
-plains_move_right = simplegui.load_image("https://ekoren.github.io/plains_main_2.png")
-valley_background = simplegui.load_image("https://ekoren.github.io/name-the-oracle/cartoon-valley-vector-2519923.jpg")
-valley_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/Valley%20King%20(1).png")
-valley_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/ValleyRunLeft.png")
-valley_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/ValleyRunRight.png")
-coast_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
-coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__4_-removebg-preview.png")
-coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
-coast_background = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_KBWG8BIym4QzbF1Kp_86P_q9IB4AlzFgT3t0FjvWKDttVwg:https://loveincorporated.blob.core.windows.net/contentimages/gallery/cf46b0d4-36a1-4e56-9282-c15d5b79315b-ghost-towns-where-no-one-lives-sanatorio-de-abona.jpg&usqp=CAU")
-
-
-forest_images = [forest_character_stand_walk, forest_character_walk,forest_character_bust]
-plains_images = [plains_move_left, plains_move_right, plains_bust]
-valley_images = [valley_move_left, valley_move_right, valley_bust]
-coast_images = [coast_move_left, coast_move_right, coast_bust]
 #Attributes Lists
 
 locations = ["Coast","Forest","Mountains","Valley","Plains"]
@@ -478,48 +564,6 @@ class Profile:
         else:
             self.response = "Villager: I don't know him."
 
-class Villager:
-    
-    def __init__(self, region):
-        self.region = region
-        regions = ['forest', 'valley', 'coast', 'plains']
-        region_images = [forest_images, valley_images, coast_images, plains_images]
-        for i in range(len(regions)):
-            if self.region == regions[i]:
-                self.images = region_images[i]
-                       
-        self.x = random.randint(5, 395)
-        self.y = random.randint(5, 295)
-        self.dir_x = 0
-        self.dir_y = 0
-        self.dir_timer = 0
-        self.speed = .2
-        self.draw_timer = 0
-        self.image_list_index = 0
-                       
-    def move(self):
-        self.dir_timer += 1
-        self.dir_timer = self.dir_timer%15
-        if self.dir_timer == 0:
-            self.dir_x = random.randint(-10, 10)
-            self.dir_y = random.randint(-10, 10)
-                       
-        self.x += self.speed*self.dir_x
-        self.y += self.speed*self.dir_y
-            
-    def draw(self, canvas):
-        self.draw_timer += 1
-        self.draw_timer = self.draw_timer%5
-        if self.draw_timer == 0:
-            self.image_list_index += 1
-            self.image_list_index = self.image_list_index%2
-                       
-        self.image = self.images[image_list_index]
-        w = self.image.get_width()
-        h = self.image.get_height()
-                       
-        canvas.draw_image(self.image, (w/2, h/2), (w, h), (self.x, self.y), (10, 10))
-        
     
     
             
@@ -653,7 +697,7 @@ def draw(canvas):
     text_draw(canvas)
     Welcome.welcome_draw(canvas)
     
-frame = simplegui.create_frame("Oracle",600,400)
+
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(typing)
 frame.add_button("Guess the oracle",Guy1.is_win)
