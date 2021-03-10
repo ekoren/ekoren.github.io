@@ -191,9 +191,9 @@ class welcome:
         
     def coast_welcome(self):
         self.welcome = True
-        self.welcome_timer = 840
+        self.welcome_timer = 120
         self.speed = 5
-        self.image = forest_background
+        self.image = coast_background
         self.villager_type = forest_character_bust
         
         message1 = "Welcome to the Coast"
@@ -226,26 +226,36 @@ class Villager:
                        
     def move(self):
         self.dir_timer += 1
-        self.dir_timer = self.dir_timer%15
+        self.dir_timer = self.dir_timer%20
         if self.dir_timer == 0:
             self.dir_x = random.randint(-10, 10)
             self.dir_y = random.randint(-10, 10)
                        
         self.x += self.speed*self.dir_x
         self.y += self.speed*self.dir_y
+        
+        if self.x < 0:
+            self.x = 600
+        if self.x > 600:
+            self.x = 0
+                
+        if self.y > 400:
+            self.y = 0
+        if self.y < 0:
+            self.y = 400
+
             
     def draw(self, canvas):
         self.draw_timer += 1
-        self.draw_timer = self.draw_timer%5
+        self.draw_timer = self.draw_timer%10
         if self.draw_timer == 0:
             self.image_list_index += 1
             self.image_list_index = self.image_list_index%2
                        
         self.image = self.images[self.image_list_index]
         w = self.image.get_width()
-        h = self.image.get_height()
-        print(self.draw_timer)               
-        canvas.draw_image(self.image, (w/2, h/2), (w, h), (self.x, self.y), (10, 10))
+        h = self.image.get_height()               
+        canvas.draw_image(self.image, (w/2, h/2), (w, h), (self.x, self.y), (100, 80))
         
 
 valley_villager = Villager('valley')
