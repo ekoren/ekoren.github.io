@@ -364,6 +364,7 @@ class Profile:
         self.display_known = False
         self.same_traits = 0
         self.attributes_text = []
+        self.meeting_villager = True
         
     def is_win(self):
         self.hello_text = "Who's the Oracle?"
@@ -443,7 +444,35 @@ class Profile:
         elif self.display_known == False:
             self.display_known = True
             
-                
+    def player_draw(self,canvas):
+        if self.up == True:
+            self.direction[1] = -3
+        elif self.down == True:
+            self.direction[1] = 3
+        else:
+            self.direction[1] = 0
+        
+        if self.left == True:
+            self.direction[0] = -3
+        elif self.right == True:
+            self.direction[0] = 3
+        else:
+            self.direction[0] = 0
+        
+        if self.x < 5:
+            self.x = 595
+        if self.x > 595:
+            self.x = 5
+        if self.y < 5:
+            self.y = 395
+        if self.y > 395:
+            self.y = 5
+            
+        self.x += self.direction[0]
+        self.y += self.direction[1]
+            
+        canvas.draw_polygon([(self.x-5,self.y-5),(self.x+5,self.y-5),(self.x+5,self.y+5),(self.x-5,self.y+5)],1,"Red","Red")    
+            
     def ask(self):
         self.hellos = ["Villager: Hello Traveler","Villager: Welcome to the "+str(self.villager_location)]
         self.hello_text = random.choice(self.hellos)
@@ -611,7 +640,7 @@ def profile_draw(canvas):
             canvas.draw_text(Guy1.known_attributes[i],[12,text_y],18,"Black")
             text_y += 18
 
-def typing(key):
+def keydown_handler(key):
     if key == simplegui.KEY_MAP['1']:
         Guy1.question_typing += '1'
     elif key == simplegui.KEY_MAP['2']:
@@ -689,6 +718,27 @@ def typing(key):
         Guy1.question = "You: "+str(Guy1.question_typing)+"?"
         Guy1.question_typing = ""
         Guy1.ask_question()
+    
+    if Guy1.meeting_villager == False:
+        if key == simplegui.KEY_MAP['up']:
+            Guy1.up = True
+        if key == simplegui.KEY_MAP['down']:
+            Guy1.down = True
+        if key == simplegui.KEY_MAP['left']:
+            Guy1.left = True
+        if key == simplegui.KEY_MAP['right']:
+            Guy1.right = True
+            
+def keyup_handler(key):
+    if Guy1.meeting_villager == False:
+        if key == simplegui.KEY_MAP['up']:
+            Guy1.up = False
+        if key == simplegui.KEY_MAP['down']:
+            Guy1.down = False
+        if key == simplegui.KEY_MAP['left']:
+            Guy1.left = False
+        if key == simplegui.KEY_MAP['right']:
+            Guy1.right = False
             
 def text_draw(canvas):
     hint = "Hint: Press ZERO to ask a question"
@@ -703,13 +753,18 @@ def text_draw(canvas):
 print(Guy1.oracle_attributes)
     
 def draw(canvas):
-    profile_draw(canvas)
-    text_draw(canvas)
+    if Guy1.meeting_villager == True:
+        profile_draw(canvas)
+        text_draw(canvas)
+    elif Guy1.meeting_villager == False:
+        canvas.draw_image(Welcome.image, [Welcome.imageWidth/2, Welcome.imageHeight/2], [Welcome.imageWidth, Welcome.imageHeight], [300, 200], [600, 400])
+        Guy1.player_draw(canvas)
     Welcome.welcome_draw(canvas)
     
 
 frame.set_draw_handler(draw)
-frame.set_keydown_handler(typing)
+frame.set_keydown_handler(keydown_handler)
+frame.set_keyup_handler(keyup_handler)
 frame.add_button("Guess the oracle",Guy1.is_win)
 frame.add_button("Change Location",Welcome.change_location)
 frame.add_button("Meet New Villager",Guy1.new_attributes)
