@@ -21,12 +21,17 @@ coast_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canv
 coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__4_-removebg-preview.png")
 coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
 coast_background = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_KBWG8BIym4QzbF1Kp_86P_q9IB4AlzFgT3t0FjvWKDttVwg:https://loveincorporated.blob.core.windows.net/contentimages/gallery/cf46b0d4-36a1-4e56-9282-c15d5b79315b-ghost-towns-where-no-one-lives-sanatorio-de-abona.jpg&usqp=CAU")
+mountain_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__1_-removebg-preview.png")
+mountain_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
+mountain_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
+mountain_background = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(1).png")
 
 
 forest_images = [forest_character_stand_walk, forest_character_walk,forest_character_bust]
 plains_images = [plains_move_left, plains_move_right, plains_bust]
 valley_images = [valley_move_left, valley_move_right, valley_bust]
 coast_images = [coast_move_left, coast_move_right, coast_bust]
+mountain_images = [mountain_move_left, mountain_move_right, mountain_bust]
 
 UP = False
 DOWN = False
@@ -91,22 +96,22 @@ def keyup(key):
 #Controlls what happens when you go to that area
 
 def on_beach():
-    print("beach")
+    frame.set_draw_handler(coast_intro)
 def forest():
-    print ("forest")    
+    frame.set_draw_handler(forest_intro)    
 def mountains():
-    print('mountains')
+    frame.set_draw_handler(mountains_intro)
 def grasslands():
-    print('grasslands')
+    frame.set_draw_handler(plains_intro)
 def valley():
-    print("valley")
+    frame.set_draw_handler(valley_intro)
 boxes = []
 boxes.append(box(60,10,50,60,"#fffb0000",on_beach))
 boxes.append(box(315,20,60,60,"#fffb0000",valley))
 boxes.append(box(320,200,50,60,"#fffb0000",forest))
 boxes.append(box(160,225,100,60,"#fffb0000",grasslands))
 boxes.append(box(210,10,50,60,"#fffb0000",mountains))
-def draw(canvas):
+def draw_overworld(canvas):
     global Scene1
     canvas.draw_image(Overworld, (Overworld.get_width()/2,Overworld.get_height()/2), (Overworld.get_width(), Overworld.get_height()), (200,150), (400,300))
     canvas.draw_image(Overworld, (Overworld.get_width()/2,Overworld.get_height()/2), (Overworld.get_width(), Overworld.get_height()), (200,150), (400,300))    
@@ -266,6 +271,8 @@ class welcome:
                     frame.set_draw_handler(draw_coast)
                 elif self.region == "valley":
                     frame.set_draw_handler(draw_valley)
+                elif self.region == "mountains":
+                    frame.set_draw_handler(draw_mountains)
                 
     def mountain_welcome(self):
         self.welcome = True
@@ -388,6 +395,7 @@ valley_villager = Villager('valley')
 coast_villager = Villager('coast')
 forest_villager = Villager('forest')
 plains_villager = Villager('plains')
+mountains_villager = Villager('mountains')
         
         
 def draw_coast(canvas):
@@ -413,12 +421,18 @@ def draw_plains(canvas):
     
 def draw_valley(canvas):
     valley_villager.move()
-    w = plains_background.get_width()
-    h = plains_background.get_height()
-    canvas.draw_image(plains_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
+    w = valley_background.get_width()
+    h = valley_background.get_height()
+    canvas.draw_image(valley_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
     valley_villager.draw(canvas)
     
-        
+ def draw_mountains(canvas):
+    mountains_villager.move()
+    w = mountains_background.get_width()
+    h = mountains_background.get_height()
+    canvas.draw_image(mountains_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
+    mountains_villager.draw(canvas)
+           
         
 #Magpie
 
@@ -888,7 +902,7 @@ def draw(canvas):
     Welcome.welcome_draw(canvas)
     
 
-frame.set_draw_handler(draw)
+frame.set_draw_handler(draw_overworld)
 frame.set_keydown_handler(keydown_handler)
 frame.set_keyup_handler(keyup_handler)
 frame.add_button("Guess the oracle",Guy1.is_win)
