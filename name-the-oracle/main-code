@@ -144,7 +144,34 @@ def draw_text(canvas, text, x, y, desired_width, font_size, color) :
    
     for i in range(len(split)) : #Loop over each line
         canvas.draw_text(split[i], [x - cx, y + i * font_size], font_size, color) #Draw each line of text under, going down a step each time
+
    
+# Handler to draw on canvas
+def valley_intro(canvas):
+    global valley_welcome_timer, valley_welcome
+    #Good luck Adventurer
+    message1 = "Welcome to the Warm Valley of Moren"
+    message2 = "The vast mountains and greenery are stunning"
+    message3 = "The people are friendly but old and proud"
+    message4 = "They do not forgive disrespect easily"
+    message5 = "Your mission is to find the Oracle among these vast mountains"
+    message6 = "Good luck Adventurer"
+    message7 = "ps. if you have time stop and ask Stew for some of her bread"
+    message8 = ""
+    message9 = ""
+
+    messages = [message1, message2, message3, message4, message5, message6, message7, message8, message9]
+
+    #print(valley_welcome)
+    if valley_welcome == True:
+        valley_welcome_timer -= 1
+        #print(valley_welcome_timer)
+        i = int(valley_welcome_timer/120)%len(messages)
+        draw_text(canvas, messages [len(messages)-i-3], 200, 100, 20, 25, "white")
+        #canvas.draw_text(messages[6-i+1], [50,162], 26, "White")
+        if valley_welcome_timer == 0:
+            valley_welcome = False
+       
 # Handler to draw on canvas
 def coast_intro(canvas):
     global welcome_timer, welcome
