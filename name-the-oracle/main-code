@@ -26,112 +26,78 @@ mountain_move_left = simplegui.load_image("https://ekoren.github.io/name-the-ora
 mountain_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
 mountain_background = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(1).png")
 
-
 forest_images = [forest_character_stand_walk, forest_character_walk,forest_character_bust]
 plains_images = [plains_move_left, plains_move_right, plains_bust]
 valley_images = [valley_move_left, valley_move_right, valley_bust]
 coast_images = [coast_move_left, coast_move_right, coast_bust]
 mountain_images = [mountain_move_left, mountain_move_right, mountain_bust]
 
-UP = False
-DOWN = False
-LEFT = False
-RIGHT = False
-Player_x = 25
-Player_y = 250
 Balloon = simplegui.load_image("https://17Captain.github.io/81J1ZB-n6mL._AC_SX679_-removebg-preview.png")
 Overworld = simplegui.load_image("https://17Captain.github.io/map (1).png")
-class box:
-    def __init__(self,x,y,width,height,color,on_collide):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.color = color
-        self.on_collide = on_collide
-    def draw(self,canvas):
-        canvas.draw_polygon([[self.x,self.y],[self.x + self.width, self.y], [self.x + self.width, self.y + self.height],[self.x, self.y + self.height]],10,self.color)
-    def includes(self, x, y):
-        return (x >= self.x) and (y >= self.y) and (x <= self.x + self.width) and (y <= self.y + self.height)
-   
-def move():
-    global UP, DOWN, LEFT, RIGHT, Player_y, Player_x
-    if UP:
-        if Player_y >= 60:
-            Player_y -= 2.5
-    if DOWN:
-        if Player_y <= 240:
-            Player_y += 2.5
-    if LEFT:
-        if Player_x >= 40:
-            Player_x -= 2.5
-    if RIGHT:
-        if Player_x <= 360:
-            Player_x += 2.5
-       
-   
-def keydown(key):
-    global UP, DOWN, LEFT, RIGHT
-    if key == simplegui.KEY_MAP["w"]:
-        UP = True
-    if key == simplegui.KEY_MAP["s"]:
-        DOWN = True
-    if key == simplegui.KEY_MAP["a"]:
-        LEFT = True
-    if key == simplegui.KEY_MAP["d"]:
-        RIGHT = True
-   
-def keyup(key):
-    global UP, DOWN, LEFT, RIGHT
-    if key == simplegui.KEY_MAP["w"]:
-        UP = False
-    if key == simplegui.KEY_MAP["s"]:
-        DOWN = False
-    if key == simplegui.KEY_MAP["a"]:
-        LEFT = False
-    if key == simplegui.KEY_MAP["d"]:
-        RIGHT = False
-   
-
-#Controlls what happens when you go to that area
-
-def on_beach():
-    frame.set_draw_handler(coast_intro)
-def forest():
-    frame.set_draw_handler(forest_intro)    
-def mountains():
-    frame.set_draw_handler(mountains_intro)
-def grasslands():
-    frame.set_draw_handler(plains_intro)
-def valley():
-    frame.set_draw_handler(valley_intro)
-boxes = []
-boxes.append(box(60,10,50,60,"#fffb0000",on_beach))
-boxes.append(box(315,20,60,60,"#fffb0000",valley))
-boxes.append(box(320,200,50,60,"#fffb0000",forest))
-boxes.append(box(160,225,100,60,"#fffb0000",grasslands))
-boxes.append(box(210,10,50,60,"#fffb0000",mountains))
-def draw_overworld(canvas):
-    global Scene1
-    canvas.draw_image(Overworld, (Overworld.get_width()/2,Overworld.get_height()/2), (Overworld.get_width(), Overworld.get_height()), (200,150), (400,300))
-    canvas.draw_image(Overworld, (Overworld.get_width()/2,Overworld.get_height()/2), (Overworld.get_width(), Overworld.get_height()), (200,150), (400,300))    
-    canvas.draw_image(Balloon, (Balloon.get_width()/2,Balloon.get_height()/2), (Balloon.get_width(), Balloon.get_height()), (Player_x, Player_y), (30,55))
-   
-   
-    move()
-   
-    for box in boxes:
-        box.draw(canvas)
-        if box.includes(Player_x, Player_y):
-            box.on_collide()
-           
-   
-# Create a frame and assign callbacks to event handlers
-#frame = simplegui.create_frame("Home", 400, 300)
-
-frame.set_draw_handler(draw)
-frame.set_keydown_handler(keydown)
-frame.set_keyup_handler(keyup)
+class Box:
+    def __init__(self):
+        self.map_width = Overworld.get_width()
+        self.map_height = Overworld.get_height()
+        self.balloon_width = Balloon.get_width()
+        self.balloon_height = Balloon.get_height()
+        self.x = 300
+        self.y = 200
+        self.direction = [0,0]
+        self.pos = [self.x,self.y]
+        self.up = False
+        self.down = False
+        self.left = False
+        self.right = False
+        self.map = False
+        
+    def map_draw(self,canvas):
+        Map.move()
+        canvas.draw_image(Overworld,[self.map_width/2,self.map_height/2],[self.map_width,self.map_height],(300,200),(600,400))
+        canvas.draw_image(Balloon,[self.balloon_width/2,self.balloon_height/2],[self.balloon_width,self.balloon_height],(self.x,self.y),(30,20))
+        
+    def move(self):
+        if self.up == True:
+            self.direction[1] = -2
+        elif self.down == True:
+            self.direction[1] = 2
+        else:
+            self.direction[1] = 0
+            
+        if self.left == True:
+            self.direction[0] = -2
+        elif self.right == True:
+            self.direction[0] = 2
+        else:
+            self.direction[0] = 0
+            
+        if self.x < 10:
+            self.x = 590
+        if self.x > 590:
+            self.x = 10
+        if self.y < 10:
+            self.y = 390
+        if self.y > 390:
+            self.y = 10
+        
+        self.x += self.direction[0]
+        self.y += self.direction[1]
+                
+        self.pos = [self.x,self.y]
+        
+    def change_location(self):
+        Guy1.villager_location = random.choice(locations)
+        self.map = True
+        
+        if Guy1.villager_location == locations[0]:
+            Welcome.coast_welcome()
+        if Guy1.villager_location == locations[1]:
+            Welcome.forest_welcome()
+        if Guy1.villager_location == locations[2]:
+            Welcome.mountain_welcome()
+        if Guy1.villager_location == locations[3]:
+            Welcome.valley_welcome()
+        if Guy1.villager_location == locations[4]:
+            Welcome.plains_welcome()
 
 def draw_text(canvas, text, x, y, desired_width, font_size, color) :
     split = [] #Initializes empty list
@@ -149,50 +115,8 @@ def draw_text(canvas, text, x, y, desired_width, font_size, color) :
    
     for i in range(len(split)) : #Loop over each line
         canvas.draw_text(split[i], [x - cx, y + i * font_size], font_size, color) #Draw each line of text under, going down a step each time
-
    
 # Handler to draw on canvas
-def valley_intro(canvas):
-    global valley_welcome_timer, valley_welcome
-    #Good luck Adventurer
-    message1 = "Welcome to the Warm Valley of Moren"
-    message2 = "The vast mountains and greenery are stunning"
-    message3 = "The people are friendly but old and proud"
-    message4 = "They do not forgive disrespect easily"
-    message5 = "Your mission is to find the Oracle among these vast mountains"
-    message6 = "Good luck Adventurer"
-    message7 = "ps. if you have time stop and ask Stew for some of her bread"
-    message8 = ""
-    message9 = ""
-
-    messages = [message1, message2, message3, message4, message5, message6, message7, message8, message9]
-
-    #print(valley_welcome)
-    if valley_welcome == True:
-        valley_welcome_timer -= 1
-        #print(valley_welcome_timer)
-        i = int(valley_welcome_timer/120)%len(messages)
-        draw_text(canvas, messages [len(messages)-i-3], 200, 100, 20, 25, "white")
-        #canvas.draw_text(messages[6-i+1], [50,162], 26, "White")
-        if valley_welcome_timer == 0:
-            valley_welcome = False
-       
-# Handler to draw on canvas
-def coast_intro(canvas):
-    global welcome_timer, welcome
-   
-   
-   
-    if coast_welcome == True:
-        w = coast_background.get_width()
-        h = coast_background.get_height()
-        canvas.draw_image(coast_background, (w/2, h/2), (w,h), (200, 150), (400, 300))
-        coast_welcome_timer -= 1
-        i = int(coast_welcome_timer/150)%len(messages)
-        draw_text(canvas, messages [len(messages)-i-1], 200, 20, 40, 15, "black")
-        if coast_welcome_timer == 0:
-            coast_welcome = False
-       
 
 class welcome:
     
@@ -200,40 +124,12 @@ class welcome:
         self.welcome = False
         self.welcome_timer = 840
         self.speed = 5
+        self.region = ''
         self.image = forest_background
+        self.imageWidth = self.image.get_width()
+        self.imageHeight = self.image.get_height()
         self.villager_type = forest_character_bust
         self.messages = ["","","","","","","",""]
-        
-        
-    def change_location(self):
-        for i in range(len(locations)):
-            if Guy1.villager_location == locations[i]:
-                if i == (len(locations)-1):
-                    Guy1.villager_location = locations[0]
-                elif i != (len(locations)-1):
-                    Guy1.villager_location = locations[i+1]
-                Guy1.attributes[0] = "Location: "+str(Guy1.villager_location)
-                Guy1.new_attributes()
-                if Guy1.villager_location == locations[0]:
-                    self.region = "coast"
-                    self.coast_welcome()
-                    
-                elif Guy1.villager_location == locations[1]:
-                    self.region = "forest"
-                    self.forest_welcome()
-                     
-                elif Guy1.villager_location == locations[2]:
-                    self.region = "mountain"
-                    self.mountain_welcome()
-                    
-                elif Guy1.villager_location == locations[3]:
-                    self.region = "valley"
-                    self.valley_welcome()
-                    
-                elif Guy1.villager_location == locations[4]:
-                    self.region = "plains"
-                    self.plains_welcome()
-                    #break
 
     def forest_welcome(self):
         self.welcome = True
@@ -241,6 +137,7 @@ class welcome:
         self.speed = 5
         self.image = forest_background
         self.villager_type = forest_character_bust
+        self.region = 'forest'
 
         message1 = "Welcome to the forest"
         message2 = "you are stranded here"
@@ -253,33 +150,24 @@ class welcome:
 
         # Handler to draw on canvas
     def welcome_draw(self,canvas):
-        imageWidth = self.image.get_width()
-        imageHeight = self.image.get_height()
+        self.imageWidth = self.image.get_width()
+        self.imageHeight = self.image.get_height()
 
         if self.welcome == True:
             self.welcome_timer -= 1
             i = int(self.welcome_timer/120)%len(self.messages)
-            canvas.draw_image(self.image, [imageWidth/2, imageHeight/2], [imageWidth, imageHeight], [300, 200], [600, 400])
+            canvas.draw_image(self.image, [self.imageWidth/2, self.imageHeight/2], [self.imageWidth, self.imageHeight], [300, 200], [600, 400])
             canvas.draw_text(self.messages[6-i], [200,200], 26, "Red")
-            if self.welcome_timer == 0:
-                self.welcome = False
-                if self.region == "forest":
-                    frame.set_draw_handler(draw_forest)
-                elif self.region == "plains":
-                    frame.set_draw_handler(draw_plains)
-                elif self.region == "coast":
-                    frame.set_draw_handler(draw_coast)
-                elif self.region == "valley":
-                    frame.set_draw_handler(draw_valley)
-                elif self.region == "mountains":
-                    frame.set_draw_handler(draw_mountains)
+        if self.welcome_timer <= 0:
+            self.welcome = False
                 
     def mountain_welcome(self):
         self.welcome = True
         self.welcome_timer = 840
         self.speed = 5
-        self.image = forest_background
-        self.villager_type = forest_character_bust
+        self.image = mountain_background
+        self.villager_type = mountain_bust
+        self.region = 'mountain'
 
         message1 = "Try to climb down the mountain "
         message2 = "Find the Mineshaft "
@@ -296,6 +184,7 @@ class welcome:
         self.speed = 5
         self.image = plains_background
         self.villager_type = plains_bust
+        self.region = 'plains'
         
         message1 = "Welcome to the Plains"
         message2 = "Bison are all around you"
@@ -312,6 +201,7 @@ class welcome:
         self.speed = 5
         self.image = valley_background
         self.villager_type = valley_bust
+        self.region = 'valley'
         
         message1 = "Welcome to the Valley"
         message2 = "Find your way out before it floods"
@@ -324,10 +214,11 @@ class welcome:
         
     def coast_welcome(self):
         self.welcome = True
-        self.welcome_timer = 120
+        self.welcome_timer = 840
         self.speed = 5
         self.image = coast_background
         self.villager_type = forest_character_bust
+        self.region = 'coast'
         
         message1 = "Welcome to the Coast"
         message2 = "The fish speak to you"
@@ -340,12 +231,11 @@ class welcome:
 
 class Villager:
     
-    def __init__(self, region):
-        self.region = region
-        regions = ['forest', 'valley', 'coast', 'plains']
-        region_images = [forest_images, valley_images, coast_images, plains_images]
+    def __init__(self):
+        regions = ['forest', 'valley', 'coast', 'plains','mountain']
+        region_images = [forest_images, valley_images, coast_images, plains_images, mountain_images]
         for i in range(len(regions)):
-            if self.region == regions[i]:
+            if Welcome.region == regions[i]:
                 self.images = region_images[i]
                        
         self.x = random.randint(5, 395)
@@ -356,7 +246,8 @@ class Villager:
         self.speed = .2
         self.draw_timer = 0
         self.image_list_index = 0
-                       
+        self.Villagers = []
+                               
     def move(self):
         self.dir_timer += 1
         self.dir_timer = self.dir_timer%20
@@ -367,18 +258,18 @@ class Villager:
         self.x += self.speed*self.dir_x
         self.y += self.speed*self.dir_y
         
-        if self.x < 0:
-            self.x = 600
-        if self.x > 600:
-            self.x = 0
+        if self.x < 5:
+            self.x = 595
+        if self.x > 595:
+            self.x = 5
                 
-        if self.y > 400:
-            self.y = 0
-        if self.y < 0:
-            self.y = 400
+        if self.y > 395:
+            self.y = 5
+        if self.y < 5:
+            self.y = 395
 
             
-    def draw(self, canvas):
+    def villager_draw(self, canvas):
         self.draw_timer += 1
         self.draw_timer = self.draw_timer%10
         if self.draw_timer == 0:
@@ -387,53 +278,16 @@ class Villager:
                        
         self.image = self.images[self.image_list_index]
         w = self.image.get_width()
-        h = self.image.get_height()               
+        h = self.image.get_height()
         canvas.draw_image(self.image, (w/2, h/2), (w, h), (self.x, self.y), (100, 80))
-        
-
-valley_villager = Villager('valley')
-coast_villager = Villager('coast')
-forest_villager = Villager('forest')
-plains_villager = Villager('plains')
-mountains_villager = Villager('mountains')
-        
-        
-def draw_coast(canvas):
-    coast_villager.move()
-    w = coast_background.get_width()
-    h = coast_background.get_height()
-    canvas.draw_image(coast_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
-    coast_villager.draw(canvas)
-    
-def draw_forest(canvas):
-    forest_villager.move()
-    w = forest_background.get_width()
-    h = forest_background.get_height()
-    canvas.draw_image(forest_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
-    forest_villager.draw(canvas)
-
-def draw_plains(canvas):
-    plains_villager.move()
-    w = plains_background.get_width()
-    h = plains_background.get_height()
-    canvas.draw_image(plains_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
-    plains_villager.draw(canvas)
-    
-def draw_valley(canvas):
-    valley_villager.move()
-    w = valley_background.get_width()
-    h = valley_background.get_height()
-    canvas.draw_image(valley_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
-    valley_villager.draw(canvas)
-    
- def draw_mountains(canvas):
-    mountains_villager.move()
-    w = mountains_background.get_width()
-    h = mountains_background.get_height()
-    canvas.draw_image(mountains_background, (w/2, h/2), (w, h), (300, 200), (600, 400))
-    mountains_villager.draw(canvas)
-           
-        
+        self.move()
+            
+def population():
+    villagers.Villagers = []
+    for i in range(random.randint(3,10)):
+        v = Villager()
+        villagers.Villagers.append(v)
+            
 #Magpie
 
 ask_food_directly = ['food', 'foods', 'eat', 'eats', 'hungry', 'meal', 'meals', 'consume', 'taste', 'tasty']
@@ -485,9 +339,15 @@ class Profile:
     
     def __init__(self):
         self.villager_location = random.choice(locations)
-        self.oracle_location = random.choice(locations)
         self.win = False
         self.is_asked = False
+        self.up = False
+        self.down = False
+        self.left = False
+        self.right = False
+        self.direction = [0,0]
+        self.x = 300
+        self.y = 200
         self.asked_question = ""
         self.question_typing = ""
         self.occupation = ""
@@ -504,7 +364,7 @@ class Profile:
         self.display_known = False
         self.same_traits = 0
         self.attributes_text = []
-        self.meeting_villager = True
+        self.meeting_villager = False
         
     def is_win(self):
         self.hello_text = "Who's the Oracle?"
@@ -745,12 +605,15 @@ class Profile:
 
     
     
-            
+Map = Box()      
 Guy1 = Profile()
 Guy1.oracle_attribute()
 Guy1.new_attributes()
 Welcome = welcome()
-Welcome.change_location()
+Map.change_location()
+villagers = Villager()
+population()
+
 
 def profile_draw(canvas):
     canvas.draw_polygon([(5,395),(350,395),(350,205),(5,205)],10,"Orange","White")
@@ -859,7 +722,7 @@ def keydown_handler(key):
         Guy1.question_typing = ""
         Guy1.ask_question()
     
-    if Guy1.meeting_villager == False:
+    if Guy1.meeting_villager == False and Map.map == False:
         if key == simplegui.KEY_MAP['up']:
             Guy1.up = True
         if key == simplegui.KEY_MAP['down']:
@@ -868,9 +731,18 @@ def keydown_handler(key):
             Guy1.left = True
         if key == simplegui.KEY_MAP['right']:
             Guy1.right = True
+    if Map.map == True:
+        if key == simplegui.KEY_MAP['up']:
+            Map.up = True
+        if key == simplegui.KEY_MAP['down']:
+            Map.down = True
+        if key == simplegui.KEY_MAP['left']:
+            Map.left = True
+        if key == simplegui.KEY_MAP['right']:
+            Map.right = True
             
 def keyup_handler(key):
-    if Guy1.meeting_villager == False:
+    if Guy1.meeting_villager == False and Map.map == False:
         if key == simplegui.KEY_MAP['up']:
             Guy1.up = False
         if key == simplegui.KEY_MAP['down']:
@@ -879,6 +751,15 @@ def keyup_handler(key):
             Guy1.left = False
         if key == simplegui.KEY_MAP['right']:
             Guy1.right = False
+    if Map.map == True:
+        if key == simplegui.KEY_MAP['up']:
+            Map.up = False
+        if key == simplegui.KEY_MAP['down']:
+            Map.down = False
+        if key == simplegui.KEY_MAP['left']:
+            Map.left = False
+        if key == simplegui.KEY_MAP['right']:
+            Map.right = False
             
 def text_draw(canvas):
     hint = "Hint: Press ZERO to ask a question"
@@ -893,21 +774,27 @@ def text_draw(canvas):
 print(Guy1.oracle_attributes)
     
 def draw(canvas):
-    if Guy1.meeting_villager == True:
+    if Guy1.meeting_villager == True and Map.map == False:
         profile_draw(canvas)
         text_draw(canvas)
-    elif Guy1.meeting_villager == False:
+    elif Guy1.meeting_villager == False and Map.map == False:
         canvas.draw_image(Welcome.image, [Welcome.imageWidth/2, Welcome.imageHeight/2], [Welcome.imageWidth, Welcome.imageHeight], [300, 200], [600, 400])
         Guy1.player_draw(canvas)
+        for Villager in villagers.Villagers:
+            Villager.villager_draw(canvas)
+    if Map.map == True:
+        Map.map_draw(canvas)
     Welcome.welcome_draw(canvas)
-    
 
-frame.set_draw_handler(draw_overworld)
+def dist(point1,point2):
+    distance = ((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)**0.5
+    return distance
+
+frame.set_draw_handler(draw)
 frame.set_keydown_handler(keydown_handler)
 frame.set_keyup_handler(keyup_handler)
 frame.add_button("Guess the oracle",Guy1.is_win)
-frame.add_button("Change Location",Welcome.change_location)
-frame.add_button("Meet New Villager",Guy1.new_attributes)
+frame.add_button("Change Location",Map.change_location)
 frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
 if Guy1.win == False:
     frame.start()
