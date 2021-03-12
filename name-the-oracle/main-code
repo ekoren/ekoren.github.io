@@ -25,6 +25,10 @@ mountain_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/c
 mountain_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
 mountain_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
 mountain_background = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(1).png")
+keeper_front = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(2).png")
+keeper_walking_1 = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(1)%20(1).png")
+keeper_walking_2 = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(3).png")
+
 
 forest_images = [forest_character_stand_walk, forest_character_walk,forest_character_bust]
 plains_images = [plains_move_left, plains_move_right, plains_bust]
