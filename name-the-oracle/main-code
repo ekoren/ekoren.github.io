@@ -507,6 +507,7 @@ class Profile:
                 self.x = 595
                 self.y = 200
                 self.new_attributes()
+                population()
             
         
     def known_attribute(self):
