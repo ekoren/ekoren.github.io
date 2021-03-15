@@ -869,6 +869,10 @@ def draw(canvas):
     if Guy1.meeting_villager == True and Map.map == False:
         profile_draw(canvas)
         text_draw(canvas)
+        Guy1.up = False
+        Guy1.down = False
+        Guy1.right = False
+        Guy1.left = False
     elif Guy1.meeting_villager == False and Map.map == False:
         canvas.draw_image(Welcome.image, [Welcome.imageWidth/2, Welcome.imageHeight/2], [Welcome.imageWidth, Welcome.imageHeight], [300, 200], [600, 400])
         Guy1.player_draw(canvas)
