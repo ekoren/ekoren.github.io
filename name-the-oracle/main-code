@@ -25,10 +25,9 @@ mountain_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/c
 mountain_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
 mountain_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
 mountain_background = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(1).png")
-keeper_front = simplegui.load_image("https://ekoren.github.io/name-the-oracle/imageedit_2_7645178494.png")
-keeper_walking_1 = simplegui.load_image("https://ekoren.github.io/name-the-oracle/imageedit_6_7328815831.png")
-keeper_walking_2 = simplegui.load_image("https://ekoren.github.io/name-the-oracle/imageedit_8_5002466308.png")
-
+keeper_front = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(2).png")
+keeper_walking_1 = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(1)%20(1).png")
+keeper_walking_2 = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(3).png")
 forest_images = [forest_character_stand_walk,forest_character_walk,forest_character_bust]
 plains_images = [plains_move_left, plains_move_right, plains_bust]
 valley_images = [valley_move_left, valley_move_right, valley_bust]
@@ -179,6 +178,10 @@ class welcome:
         self.imageHeight = self.image.get_height()
         self.villager_type = forest_character_bust
         self.messages = ["","","","","","","",""]
+        
+    def skip_intro(self):
+        self.welcome_timer = 0
+        self.welcome = False
 
     def forest_welcome(self):
         self.welcome = True
@@ -504,6 +507,10 @@ class Profile:
         for Villager in villagers.Villagers:
             if dist(self.pos,Villager.pos) < 5:
                 self.meeting_villager = True
+                self.up = False
+                self.down = False
+                self.left = False
+                self.right - False
                 self.x = 595
                 self.y = 200
                 self.new_attributes()
@@ -879,6 +886,7 @@ frame.set_draw_handler(draw)
 frame.set_keydown_handler(keydown_handler)
 frame.set_keyup_handler(keyup_handler)
 frame.add_button("Guess the oracle",Guy1.is_win)
+frame.add_button("Skip Intro",Welcome.skip_intro)
 frame.add_button("Meet new Villager",Guy1.meet_villager)
 frame.add_button("Change Location",Map.change_location)
 frame.add_button("Known Oracle Attributes",Guy1.known_attribute)
