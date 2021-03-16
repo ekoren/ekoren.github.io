@@ -577,7 +577,7 @@ class Profile:
             
     def ask_question(self):
         if self.same_traits >= 2:
-            self.response = "Villager: Can you repeat that?"
+            self.response = random.choice(["Villager: Can you repeat that?", "Villager: You sound really dumb right now.", "Villager: I don't want to answer that.", "Villager: Shhhhh... They'll hear.", "Villager: Shut up and go away.", "Villager: Be gone!", "Villager: Let's change the subject...", "Villager: Enough about this silly oracle", "Villager: Kiss me...", "Villager: ...", "Villager: Shut it nerd! *dabs*"])
             
             for i in range(len(ask_food_directly)):
                 if ask_food_directly[i] in self.asked_question:	
