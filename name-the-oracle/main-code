@@ -20,7 +20,7 @@ valley_move_right = simplegui.load_image("https://ekoren.github.io/name-the-orac
 coast_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas%20(6).png")
 coast_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__4_-removebg-preview.png")
 coast_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__5_-removebg-preview.png")
-coast_background = simplegui.load_image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_KBWG8BIym4QzbF1Kp_86P_q9IB4AlzFgT3t0FjvWKDttVwg:https://loveincorporated.blob.core.windows.net/contentimages/gallery/cf46b0d4-36a1-4e56-9282-c15d5b79315b-ghost-towns-where-no-one-lives-sanatorio-de-abona.jpg&usqp=CAU")
+coast_background = simplegui.load_image("https://ekoren.github.io/canvas%20(7).png")
 mountain_bust = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__1_-removebg-preview.png")
 mountain_move_left = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
 mountain_move_right = simplegui.load_image("https://ekoren.github.io/name-the-oracle/canvas__2_-removebg-preview.png")
