@@ -182,6 +182,26 @@ class welcome:
     def skip_intro(self):
         self.welcome_timer = 0
         self.welcome = False
+       
+    def main_welcome(self):
+        self.welcome = True
+        self.welcome_timer = 840
+        self.speed = 5
+        self.image = Overworld
+        self.villager_type = forest_character_bust
+        self.region = 'forest'
+        Guy1.villager_location = "Forest"
+
+        message1 = "Welcome to the search for the oracle"
+        message2 = "you must find him"
+        message3 = "it is your lifelong duty"
+        message4 = "do not fail for destruction ensues"
+        message5 = "As the Keeper you must seek out"
+        message6 = "the oracle and therefore save everyone"
+        message7 = "Good Luck!"
+        self.messages = [message1, message2, message3, message4, message5, message6, message7]
+
+  
 
     def forest_welcome(self):
         self.welcome = True
@@ -705,6 +725,7 @@ Guy1.new_attributes()
 Welcome = welcome()
 villagers = Villager()
 population()
+Welcome.main_welcome()
 
 
 def profile_draw(canvas):
