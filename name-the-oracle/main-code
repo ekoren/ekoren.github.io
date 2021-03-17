@@ -182,26 +182,6 @@ class welcome:
     def skip_intro(self):
         self.welcome_timer = 0
         self.welcome = False
-       
-    def main_welcome(self):
-        self.welcome = True
-        self.welcome_timer = 840
-        self.speed = 5
-        self.image = Overworld
-        self.villager_type = forest_character_bust
-        self.region = 'forest'
-        Guy1.villager_location = "Forest"
-
-        message1 = "Welcome to the search for the oracle"
-        message2 = "you must find him"
-        message3 = "it is your lifelong duty"
-        message4 = "do not fail for destruction ensues"
-        message5 = "As the Keeper you must seek out"
-        message6 = "the oracle and therefore save everyone"
-        message7 = "Good Luck!"
-        self.messages = [message1, message2, message3, message4, message5, message6, message7]
-
-  
 
     def forest_welcome(self):
         self.welcome = True
@@ -332,10 +312,7 @@ class Villager:
         if self.dir_timer == 0:
             self.dir_x = random.randint(-10, 10)
             self.dir_y = random.randint(-10, 10)
-                       
-        self.x += self.speed*self.dir_x
-        self.y += self.speed*self.dir_y
-        
+
         if self.x < 5:
             self.x = 595
         if self.x > 595:
@@ -345,6 +322,26 @@ class Villager:
             self.y = 5
         if self.y < 5:
             self.y = 395
+        
+        if Welcome.region == 'coast':
+        
+            if self.y < 300:
+                self.dir_y *= -1
+                self.y = 301
+            if self.y > 380:
+                self.dir_y *= -1
+                self.y = 379
+       # if Welcome.region == 'mountain':
+             #self.y < 300:
+             #   self.y = 301
+           # self.y > 394:
+               # self.y = 393
+             
+                
+        self.x += self.speed*self.dir_x
+        self.y += self.speed*self.dir_y
+        
+            
 
         self.pos = [self.x,self.y]
             
@@ -725,7 +722,6 @@ Guy1.new_attributes()
 Welcome = welcome()
 villagers = Villager()
 population()
-Welcome.main_welcome()
 
 
 def profile_draw(canvas):
